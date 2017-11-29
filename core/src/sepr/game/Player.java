@@ -32,7 +32,6 @@ public abstract class Player {
         this.troopsToAllocate = 0;
     }
 
-
     /**
      * Let player attack enemy territories adjacent to its own
      */

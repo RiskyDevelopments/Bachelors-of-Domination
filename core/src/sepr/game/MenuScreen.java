@@ -34,20 +34,14 @@ public class MenuScreen implements Screen {
         this.stage.addActor(table);
         this.table.setDebug(false); // enable table drawing for ui debug
 
-        Texture buttons = new Texture("ui/buttons.png"); // texture sheet for buttons
-        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(); // create style for buttons to use
-        style.up = new TextureRegionDrawable(new TextureRegion(buttons, 0, 0, 400, 150)); // image for button to use in default state
-        style.down = new TextureRegionDrawable(new TextureRegion(buttons, 0, 150, 400, 150)); // image for button to use when pressed down
-        style.font = new BitmapFont(); // set button font to the default Bitmap Font
+        final TextButton startGameBtn = WidgetFactory.genBasicButton("New Game");
+        final TextButton loadGameBtn = WidgetFactory.genBasicButton("Load Game");
+        final TextButton optionsBtn = WidgetFactory.genBasicButton("Options");
+        final TextButton exitBtn = WidgetFactory.genBasicButton("Exit");
 
-        final TextButton startGameBtn = new TextButton("New Game", style);
-        final TextButton loadGameBtn = new TextButton("Load Game", style);
-        final TextButton optionsBtn = new TextButton("Options", style);
-        final TextButton exitBtn = new TextButton("Exit", style);
-
-        final Image topBar = new Image(new Texture("ui/topBar.png"));
-        final Image bottomBar = new Image(new Texture("ui/bottomBar.png"));
-        final Image mapGraphic = new Image(new Texture("ui/mapGraphic.png"));
+        final Image topBar = WidgetFactory.genTopBarGraphic();
+        final Image bottomBar = WidgetFactory.genBottomBarGraphic();
+        final Image mapGraphic = WidgetFactory.genMapGraphic();
 
         /* Create sub-table for all the menu buttons */
         Table btnTable = new Table();

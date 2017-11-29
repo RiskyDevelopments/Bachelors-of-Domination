@@ -17,6 +17,8 @@ public class Main extends Game implements ApplicationListener {
 	 */
 	@Override
 	public void create () {
+		new WidgetFactory(); // setup widget factory for generating UI components
+
 		this.menuScreen = new MenuScreen(this);
 		this.gameScreen = new GameScreen(this, new HashMap<Integer, Player>(), false, 100);
 		this.optionsScreen = new OptionsScreen(this);

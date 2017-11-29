@@ -1,15 +1,25 @@
 package sepr.game;
 
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 /**
  * Created by Dom's Surface Mark 2 on 16/11/2017.
  */
 public class OptionsScreen implements Screen {
     private Main main;
+    private Stage stage;
+    private Table table;
 
     public OptionsScreen(Main main) {
         this.main = main;
+        this.stage = new Stage();
+        this.stage.setViewport(new ScreenViewport());
+        this.table = new Table();
+        this.stage.addActor(table);
+        this.table.setFillParent(true);
     }
 
     @Override

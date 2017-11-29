@@ -28,6 +28,7 @@ public class GameScreen implements Screen, InputProcessor{
     private SpriteBatch gamplayBatch;
     private OrthographicCamera gameplayCamera;
     private Viewport gameplayViewport;
+    private Texture mapBackground;
 
     private HashMap<Integer, Player> players; // player id mapping to the relevant player
     private HashMap<Integer, Boolean> keysDown; // mapping from key, (Input.Keys), to whether it has been pressed down
@@ -57,6 +58,7 @@ public class GameScreen implements Screen, InputProcessor{
         this.gameplayCamera = new OrthographicCamera();
         this.gameplayViewport = new ScreenViewport(gameplayCamera);
         this.gameplayCamera.translate(1920/2, 1080/2, 0);
+        this.mapBackground = new Texture("ui/mapBackground.png");
 
         this.players = players;
 
@@ -173,6 +175,7 @@ public class GameScreen implements Screen, InputProcessor{
         gameplayCamera.update();
         gamplayBatch.setProjectionMatrix(gameplayCamera.combined);
         gamplayBatch.begin();
+        gamplayBatch.draw(mapBackground, 0, 0, gameplayViewport.getScreenWidth(), gameplayViewport.getScreenHeight() );
         map.draw(gamplayBatch);
         gamplayBatch.end();
 
