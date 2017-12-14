@@ -1,35 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0ac49ec6-0c15-4c66-b89b-655b6bf8c695" name="Default" comment="Optimisation">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/src/sepr/ui/UiPanel.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/src/sepr/ui/UiPanelFactory.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/core/assets/ui/labelTexture.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/core/assets/ui/mapBackground.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/core/assets/ui/offSwitch.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/core/assets/ui/onSwitch.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/core/assets/ui/optionsGraphic.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/core/assets/ui/sliderBar.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/core/assets/ui/sliderKnob.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/core/src/sepr/game/AttackWheel.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/core/src/sepr/game/AudioHandler.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/core/src/sepr/game/College.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/core/src/sepr/game/TurnPhase.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/core/src/sepr/game/WidgetFactory.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/core/src/test/java/sepr/game/MapTest.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Implementation.ipr" afterPath="$PROJECT_DIR$/Implementation.ipr" />
+    <list default="true" id="0ac49ec6-0c15-4c66-b89b-655b6bf8c695" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Implementation.iws" afterPath="$PROJECT_DIR$/Implementation.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/build.gradle" afterPath="$PROJECT_DIR$/core/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/core_main.iml" afterPath="$PROJECT_DIR$/core/core_main.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/core_test.iml" afterPath="$PROJECT_DIR$/core/core_test.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/sepr/game/GameScreen.java" afterPath="$PROJECT_DIR$/core/src/sepr/game/GameScreen.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/sepr/game/Main.java" afterPath="$PROJECT_DIR$/core/src/sepr/game/Main.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/sepr/game/Map.java" afterPath="$PROJECT_DIR$/core/src/sepr/game/Map.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/sepr/game/MenuScreen.java" afterPath="$PROJECT_DIR$/core/src/sepr/game/MenuScreen.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/sepr/game/OptionsScreen.java" afterPath="$PROJECT_DIR$/core/src/sepr/game/OptionsScreen.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/sepr/game/Sector.java" afterPath="$PROJECT_DIR$/core/src/sepr/game/Sector.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/desktop/desktop_main.iml" afterPath="$PROJECT_DIR$/desktop/desktop_main.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/desktop/desktop_test.iml" afterPath="$PROJECT_DIR$/desktop/desktop_test.iml" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -1417,11 +1390,18 @@
       <option name="project" value="LOCAL" />
       <updated>1512001506681</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Optimisation">
+      <created>1513273406413</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1513273406413</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="62119000" />
+    <option name="totallyTimeSpent" value="62149000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
@@ -1439,7 +1419,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3280543" sideWeight="0.48979592" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1433942" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1433942" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32921588" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
