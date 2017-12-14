@@ -33,21 +33,14 @@ public class MenuScreen implements Screen {
         this.table.setFillParent(true); // make ui table fill the entire screen
         this.stage.addActor(table);
         this.table.setDebug(false); // enable table drawing for ui debug
+        this.setupUi();
+    }
 
-        Texture buttons = new Texture("ui/buttons.png"); // texture sheet for buttons
-        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(); // create style for buttons to use
-        style.up = new TextureRegionDrawable(new TextureRegion(buttons, 0, 0, 400, 150)); // image for button to use in default state
-        style.down = new TextureRegionDrawable(new TextureRegion(buttons, 0, 150, 400, 150)); // image for button to use when pressed down
-        style.font = new BitmapFont(); // set button font to the default Bitmap Font
-
-        final TextButton startGameBtn = new TextButton("New Game", style);
-        final TextButton loadGameBtn = new TextButton("Load Game", style);
-        final TextButton optionsBtn = new TextButton("Options", style);
-        final TextButton exitBtn = new TextButton("Exit", style);
-
-        final Image topBar = new Image(new Texture("ui/topBar.png"));
-        final Image bottomBar = new Image(new Texture("ui/bottomBar.png"));
-        final Image mapGraphic = new Image(new Texture("ui/mapGraphic.png"));
+    private Table setupMenuTable() {
+        final TextButton startGameBtn = WidgetFactory.genBasicButton("New Game");
+        final TextButton loadGameBtn = WidgetFactory.genBasicButton("Load Game");
+        final TextButton optionsBtn = WidgetFactory.genBasicButton("Options");
+        final TextButton exitBtn = WidgetFactory.genBasicButton("Exit");
 
         /* Create sub-table for all the menu buttons */
         Table btnTable = new Table();
@@ -66,25 +59,6 @@ public class MenuScreen implements Screen {
         btnTable.row();
         btnTable.left();
         btnTable.add(exitBtn).pad(30);
-        /* Sub-table complete */
-
-        table.background(new TextureRegionDrawable(new TextureRegion(new Texture("ui/background.png"))));
-
-        // insert top bar graphic
-        table.center();
-        table.add(topBar).colspan(2);
-
-        // insert button table
-        table.row();
-        table.left();
-        table.add(btnTable);
-
-        table.right();
-        table.add(mapGraphic).pad(30);
-
-        table.row();
-        table.center();
-        table.add(bottomBar).colspan(2);
 
         startGameBtn.addListener(new ChangeListener() {
             @Override
@@ -96,7 +70,7 @@ public class MenuScreen implements Screen {
         loadGameBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                System.out.println("Go to options");
+                System.out.println("Load game");
             }
         });
 
@@ -113,11 +87,33 @@ public class MenuScreen implements Screen {
                 Gdx.app.exit();
             }
         });
+
+        /* Sub-table complete */
+        return btnTable;
+    }
+
+    private void setupUi() {
+        table.background(new TextureRegionDrawable(new TextureRegion(new Texture("ui/background.png"))));
+
+        table.center();
+        table.add(WidgetFactory.genTopBarGraphic()).colspan(2).fillX();
+
+        table.row();
+        table.left();
+        table.add(setupMenuTable()).expand();
+
+        table.right();
+        table.add(WidgetFactory.genMapGraphic()).pad(30);
+
+        table.row();
+        table.center();
+        table.add(WidgetFactory.genBottomBarGraphic()).colspan(2).fillX();
     }
 
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
+        main.applyPreferences();
     }
 
     @Override

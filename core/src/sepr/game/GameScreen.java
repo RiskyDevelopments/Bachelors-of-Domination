@@ -14,7 +14,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Iterator;
+import java.util.ArrayList;
 
 /**
  * Created by Dom's Surface Mark 2 on 16/11/2017.
@@ -29,6 +34,7 @@ public class GameScreen implements Screen, InputProcessor{
     private SpriteBatch gamplayBatch;
     private OrthographicCamera gameplayCamera;
     private Viewport gameplayViewport;
+    private Texture mapBackground;
 
     private HashMap<Integer, Player> players; // player id mapping to the relevant player
     private HashMap<Integer, Boolean> keysDown; // mapping from key, (Input.Keys), to whether it has been pressed down
@@ -37,8 +43,12 @@ public class GameScreen implements Screen, InputProcessor{
     private boolean turnTimerPaused;
     private int maxTurnTime;
     private int turnTimeElapsed;
-    private Integer[] turnOrder; // array of player ids in order of players' turns;
-    private int currentPlayer; // index of current player
+    private List<Integer> turnOrder; // array of player ids in order of players' turns;
+    private int currentPlayer; // index of current player in turnOrder list
+    private TurnPhase currentPhase = TurnPhase.REINFORCEMENT; // first phase of game is reinforcement
+    private boolean midAttack; // Stores if the attack phase is initiated
+    private Sector attackingSector; // Stores the sector being used to attack in the attack phase (could store as ID and lookup object each time to save memory)
+    private Sector defendingSector; // Stores the sector being attacked in the attack phase (could store as ID and lookup object each time to save memory)
 
     /**
      * Performs the game's initial setup
@@ -57,7 +67,7 @@ public class GameScreen implements Screen, InputProcessor{
         this.gamplayBatch = new SpriteBatch();
         this.gameplayCamera = new OrthographicCamera();
         this.gameplayViewport = new ScreenViewport(gameplayCamera);
-        this.gameplayCamera.translate(1920/2, 1080/2, 0);
+        this.mapBackground = new Texture("ui/mapBackground.png");
 
         this.players = players;
 
@@ -71,15 +81,18 @@ public class GameScreen implements Screen, InputProcessor{
         this.turnTimerPaused = false;
         this.maxTurnTime = maxTurnTime;
         this.turnTimeElapsed = 0;
-        this.turnOrder = this.players.keySet().toArray(new Integer[0]);
+        this.turnOrder = new ArrayList<Integer>(players.keySet());
         this.currentPlayer = 0;
+        this.midAttack = false;
 
         setupUi();
 
         allocateSectors();
-        playGame();
     }
 
+    /**
+     *
+     */
     private void setupUi() {
         this.table = new Table();
         this.table.setFillParent(true);
@@ -98,23 +111,76 @@ public class GameScreen implements Screen, InputProcessor{
         table.add(startGameBtn);
     }
 
-    private void playGame() {
-
-    }
 
     /**
-     * Allocate sectors to each player in a balanced mannor
+     * Created by Owain's Asus on 10/12/2017.
+     * Allocate sectors to each player in a balanced manner.
+     * Just need the finished csv file so we can calculate Total reinforcements but apart from
+     * that the method is finished. The method also has an if statement to catch a divide by zero
+     * error in players.size(). This won't be needed as later on when more of the game implementation is
+     * introduced this method will only be called when all players have been declared after the intermediate
+     * setup menu.
      */
     private void allocateSectors() {
+        if (players.size() == 0) {
+            throw new RuntimeException("Cannot allocate sectors to 0 players");
+        }
 
+        HashMap<Integer, Integer> playerReinforcements = new HashMap<Integer, Integer>(); // mapping of player id to amount of reinforcements they will receive currently
+        // set all players to currently be receiving 0 reinforcements
+        for (Integer i : players.keySet()) {
+            playerReinforcements.put(i, 0);
+        }
+
+        int lowestReinforcementId = players.get(0).getId();; // id of player currently receiving the least reinforcements
+        for (Integer i : map.getSectorIds()) {
+            if (map.getSector(i).isDecor()) {
+                continue; // skip allocating sector if it is a decor sector
+            }
+            map.getSector(i).setOwner(players.get(lowestReinforcementId));
+            playerReinforcements.put(lowestReinforcementId, playerReinforcements.get(lowestReinforcementId) + map.getSector(i).getReinforcementsProvided()); // updates player reinforcements hashmap
+
+            // find the new player with lowest reinforcements
+            int minReinforcements = Collections.min(playerReinforcements.values()); // get lowest reinforcement amount
+            for (Integer j : playerReinforcements.keySet()) {
+                if (playerReinforcements.get(j) == minReinforcements) { // if this player has the reinforcements matching the min amount set them to the new lowest player
+                    lowestReinforcementId = j;
+                    break;
+                }
+            }
+        }
     }
 
     /**
      *
-     * @param playerId player's whos turn it is to be carried out
      */
-    private void executePlayerTurn(int playerId) {
+    private void adavancePhase() {
+        switch (currentPhase) {
+            case REINFORCEMENT:
+                currentPhase = TurnPhase.ATTACK;
+                break;
+            case ATTACK:
+                if (map.checkForWinner() != -1) {
+                    // gameover a player has won
+                    gameOver(map.checkForWinner());
+                }
+                currentPhase = TurnPhase.MOVEMENT;
+                break;
+            case MOVEMENT:
+                nextPlayer();
+                break;
+        }
+    }
 
+    /**
+     * Called when the player ends the MOVEMENT phase of their turn to advance the game to the next Player's turn
+     */
+    private void nextPlayer() {
+        currentPhase = TurnPhase.REINFORCEMENT;
+        currentPlayer++;
+        if (currentPlayer == turnOrder.size()) {
+            currentPlayer = 0;
+        }
     }
 
     /**
@@ -129,7 +195,7 @@ public class GameScreen implements Screen, InputProcessor{
      * Writes the game state to a file
      */
     private void saveGameState() {
-
+        // not part of this assessment
     }
 
     /**
@@ -137,7 +203,7 @@ public class GameScreen implements Screen, InputProcessor{
      * @param gameState
      */
     private void loadGameState(String gameState) {
-
+        // not part of this assessment
     }
 
     private void controlCamera() {
@@ -169,33 +235,66 @@ public class GameScreen implements Screen, InputProcessor{
         /* Gameplay */
         // update gameplay
         this.controlCamera();
-        /*if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            gameplayCamera.translate(-4,0,0);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            gameplayCamera.translate(4,0,0);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            gameplayCamera.translate(0,4,0);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            gameplayCamera.translate(0,-4,0);
-        }*/
 
         //render gameplay
         gameplayCamera.update();
         gamplayBatch.setProjectionMatrix(gameplayCamera.combined);
         gamplayBatch.begin();
+        gamplayBatch.draw(mapBackground, 0, 0, gameplayViewport.getScreenWidth(), gameplayViewport.getScreenHeight() );
         map.draw(gamplayBatch);
         gamplayBatch.end();
 
         /* UI */
         // update UI
-        this.stage.act(Gdx.graphics.getDeltaTime());
+        this.stage.act(delta);
 
         // render UI
         this.stage.draw();
     }
+
+
+    /**
+     * handles mouse clicks during the reinforcement phase
+     * @param worldX
+     * @param worldY
+     */
+    private void reinforcePhaseTouchUp(float worldX, float worldY) {
+
+    }
+
+    /**
+     * handles mouse clicks during the attack phase
+     * @param worldX
+     * @param worldY
+     */
+    private void attackPhaseTouchUp(float worldX, float worldY) {
+        int sectorid = map.detectSectorClick((int)worldX, (int)worldY);
+        if (sectorid != -1) { // If selected a sector
+            Sector selected = map.getSector(sectorid); // Current sector
+            if (this.midAttack) { // If its the second selection in the attack phase
+                if (this.attackingSector.isAdjacentTo(selected) && selected.getOwnerId() != this.currentPlayer) { // If not own sector and its adjacent
+                    this.defendingSector = selected;
+                    // Call to initiate attack + advance phase
+                    this.midAttack = false;
+                } else { // Cancel attack as not attackable
+                    this.midAttack = false;
+                }
+            } else if (selected.getOwnerId() == this.currentPlayer && selected.getUnitsInSector() > 1) { // First selection, is owned by the player and has enough troops
+                this.midAttack = true;
+                this.attackingSector = selected;
+            }
+        }
+    }
+
+    /**
+     * handles mouse clicks during the movement phase
+     * @param worldX
+     * @param worldY
+     */
+    private void movementPhaseTouchUp(float worldX, float worldY) {
+        // not part of this assessment
+    }
+
 
     @Override
     public void resize(int width, int height) {
@@ -282,9 +381,20 @@ public class GameScreen implements Screen, InputProcessor{
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        int tempX = (int) gameplayCamera.unproject(new Vector3(screenX, screenY, 0)).x;
-        int tempY = (int) (gameplayCamera.unproject(new Vector3(screenX, screenY, 0)).y - 1080) * -1;
-        map.detectSectorClick(tempX, tempY); // does not currently handle changes to cam zoom or pos
+        float worldX = gameplayCamera.unproject(new Vector3(screenX, screenY, 0)).x;
+        float worldY = (gameplayCamera.unproject(new Vector3(screenX, screenY, 0)).y - Gdx.graphics.getHeight()) * -1;
+
+        switch (currentPhase) {
+            case REINFORCEMENT:
+                reinforcePhaseTouchUp(worldX, worldY);
+                break;
+            case ATTACK:
+                attackPhaseTouchUp(worldX, worldY);
+                break;
+            case MOVEMENT:
+                movementPhaseTouchUp(worldX, worldY);
+                break;
+        }
         return true;
     }
 

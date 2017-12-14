@@ -23,8 +23,5 @@ hs_err_pid*
 
 # IntelliJ files
 .idea/
-
-# libGDX
-Implementation.iml
-Implementation.ipr
-Implementation.iws
+*.iws
+out/

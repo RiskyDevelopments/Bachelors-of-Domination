@@ -9,3 +9,8 @@ sourceSets.main.java.srcDirs = [ "src/" ]
 eclipse.project {
     name = appName + "-core"
 }
+
+dependencies {
+    compile 'org.junit.jupiter:junit-jupiter-api'
+    compile 'junit:junit:4.12'
+}
