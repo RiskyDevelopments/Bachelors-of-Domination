@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import java.util.HashSet;
@@ -83,36 +84,49 @@ public class OptionsScreen implements Screen {
         fullscreenSwitch = WidgetFactory.genOnOffSwitch();
         colourblindModeSwitch = WidgetFactory.genOnOffSwitch();
 
+        Label musicVolumeLabel = WidgetFactory.genMenuBtnLabel("MUSIC VOLUME");
+        musicVolumeLabel.setAlignment(Align.center);
+        Label fxVolumeLabel = WidgetFactory.genMenuBtnLabel("FX VOLUME");
+        fxVolumeLabel.setAlignment(Align.center);
+        Label resolutionSelectorLabel = WidgetFactory.genMenuBtnLabel("RESOLUTION");
+        resolutionSelectorLabel.setAlignment(Align.center);
+        Label fullscreenSwitchLabel = WidgetFactory.genMenuBtnLabel("FULLSCREEN");
+        fullscreenSwitchLabel.setAlignment(Align.center);
+        Label colourblindModeSwitchLabel = WidgetFactory.genMenuBtnLabel("COLOURBLIND MODE");
+        colourblindModeSwitchLabel.setAlignment(Align.center);
+
+
         Table table = new Table();
+        table.setDebug(true);
         table.left();
-        table.add(WidgetFactory.genStyledLabel("Music Volume")).fill().pad(30);
+        table.add(musicVolumeLabel).height(60).width(420).pad(20);
         table.right();
-        table.add(musicSlider);
+        table.add(musicSlider).padLeft(150);
 
         table.row();
         table.left();
-        table.add(WidgetFactory.genStyledLabel("FX Volume")).fill().pad(30);
+        table.add(fxVolumeLabel).height(60).width(420).pad(20);
         table.right();
-        table.add(fxSlider);
+        table.add(fxSlider).padLeft(150);
 
         table.row();
         table.left();
-        table.add(WidgetFactory.genStyledLabel("Resolution")).fill().pad(30);
+        table.add(resolutionSelectorLabel).height(60).width(420).pad(20);
         table.right();
-        table.add(resolutionSelector);
+        table.add(resolutionSelector).padLeft(150);
 
         table.row();
         table.left();
-        table.add(WidgetFactory.genStyledLabel("Fullscreen")).fill().pad(30);
+        table.add(fullscreenSwitchLabel).height(60).width(420).pad(20);
         table.right();
-        table.add(fullscreenSwitch);
+        table.add(fullscreenSwitch).padLeft(150);
 
         table.row();
         table.left();
-        table.add(WidgetFactory.genStyledLabel("Colourblind Mode")).fill().pad(30);
+        table.add(colourblindModeSwitchLabel).height(60).width(420).pad(20);
         table.right();
-        table.add(colourblindModeSwitch);
-
+        table.add(colourblindModeSwitch).padLeft(150);
+/**
         TextButton cancelButton = WidgetFactory.genBasicButton("Cancel");
         cancelButton.addListener(new ChangeListener() {
             @Override
@@ -120,8 +134,8 @@ public class OptionsScreen implements Screen {
                 main.setMenuScreen();
             }
         });
-
-        TextButton acceptButton = WidgetFactory.genBasicButton("Accept");
+**/
+        TextButton acceptButton = WidgetFactory.genBasicButton("CONFIRM CHANGES");
         acceptButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -132,26 +146,26 @@ public class OptionsScreen implements Screen {
 
         table.row();
         table.left();
-        table.add(cancelButton).fill().pad(30);
-        table.right();
-        table.add(acceptButton);
+        //table.add(cancelButton).height(60).width(420).pad(20);
+        //table.right();
+        table.add(acceptButton).height(60).width(420).pad(20);
 
         return table;
     }
 
     private void setupUi() {
-        table.background(new TextureRegionDrawable(new TextureRegion(new Texture("ui/background.png"))));
+        table.background(new TextureRegionDrawable(new TextureRegion(new Texture("ui/HD-assets/Menu-Background.png"))));
 
         table.center();
-        table.add(WidgetFactory.genTopBarGraphic()).colspan(2).fillX();
+        table.add(WidgetFactory.genTopBar("OPTIONS")).colspan(2);
 
         table.row();
         table.add(setupOptionsTable()).expand();
 
-        table.add(WidgetFactory.genOptionsGraphic()).pad(30);
+        table.add(WidgetFactory.genOptionsGraphic()).height(700).width(540).pad(30);
 
         table.row();
-        table.add(WidgetFactory.genBottomBarGraphic()).colspan(2).fillX();
+        table.add(WidgetFactory.genBottomBar("MAIN MENU")).colspan(2);
     }
 
     /**

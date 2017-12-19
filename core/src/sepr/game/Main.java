@@ -13,6 +13,7 @@ public class Main extends Game implements ApplicationListener {
 	private MenuScreen menuScreen;
 	private GameScreen gameScreen;
 	private OptionsScreen optionsScreen;
+	private GameSetupScreen gameSetupScreen;
 
 	/**
 	 * Setup the screens and set the first screen as the menu
@@ -74,6 +75,7 @@ public class Main extends Game implements ApplicationListener {
 		this.menuScreen = new MenuScreen(this);
 		this.gameScreen = new GameScreen(this, players, false, 100);
 		this.optionsScreen = new OptionsScreen(this);
+		this.gameSetupScreen = new GameSetupScreen(this);
 
 		this.setMenuScreen();
 	}
@@ -89,6 +91,8 @@ public class Main extends Game implements ApplicationListener {
 	public void setOptionsScreen() {
 		this.setScreen(optionsScreen);
 	}
+
+	public void setGameSetupScreen() {this.setScreen(gameSetupScreen); }
 
 	/**
 	 * Applies the players options preferences
@@ -129,4 +133,6 @@ public class Main extends Game implements ApplicationListener {
 		menuScreen.dispose();
 		gameScreen.dispose();
 	}
+
+
 }
