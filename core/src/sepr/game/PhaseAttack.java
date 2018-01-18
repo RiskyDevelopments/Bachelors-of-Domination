@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
+import java.util.Random;
+
 public class PhaseAttack extends Phase{
 
     private TextureRegion arrow; // TextureRegion for rendering attack visualisation
@@ -18,6 +20,8 @@ public class PhaseAttack extends Phase{
     private Vector2 arrowTailPosition; // Vector x,y for the base of the arrow
     private Vector2 arrowHeadPosition; // Vector x,y for the point of the arrow
 
+    private Random random; // random object for adding some unpredictability to the outcome of attacks
+
     public PhaseAttack(GameScreen gameScreen, Map map) {
         super(gameScreen, map, TurnPhaseType.ATTACK);
 
@@ -28,6 +32,8 @@ public class PhaseAttack extends Phase{
         this.mousePos = new Vector2();
         this.arrowHeadPosition = new Vector2();
         this.arrowTailPosition = new Vector2();
+
+        this.random = new Random();
     }
 
     /**
@@ -58,8 +64,10 @@ public class PhaseAttack extends Phase{
         int attackers = numOfAttackers[0];
         int defenders = defendingSector.getUnitsInSector();
 
-        int attackersLost = 2;
-        int defendersLost = 2;
+        float attackerDefenderDiff = Math.abs(defenders - attackers);
+
+        int attackersLost = (int)Math.min(attackers, attackerDefenderDiff - 2 + random.nextInt(5));
+        int defendersLost = (int)Math.min(defenders, attackerDefenderDiff - 2 + random.nextInt(5));
 
         map.addUnitsToSectorAnimated(attackingSector.getId(), -attackersLost);
         map.addUnitsToSectorAnimated(defendingSector.getId(), -defendersLost);
