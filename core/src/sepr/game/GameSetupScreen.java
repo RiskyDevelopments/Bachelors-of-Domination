@@ -332,7 +332,7 @@ public class GameSetupScreen implements Screen{
      * @param collegeName name of college to get colour for
      * @return Color corresponding to the given college
      */
-    private static Color getCollegeColor (CollegeName collegeName) {
+    public static Color getCollegeColor (CollegeName collegeName) {
         switch (collegeName) {
             case ALCUIN:
                 return Color.RED;

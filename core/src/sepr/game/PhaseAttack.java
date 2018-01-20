@@ -49,7 +49,7 @@ public class PhaseAttack extends Phase{
         gameplayBatch.draw(arrow, startX, (startY - thickness/2), 0, thickness/2, (float)height, thickness,1, 1, (float)angle);
     }
 
-    private void getNumberOfAttackers() throws RuntimeException{
+    private void getNumberOfAttackers() throws RuntimeException {
         if (attackingSector == null || defendingSector == null) {
             throw new RuntimeException("Cannot execute attack unless both an attacking and defending sector have been selected");
         }
@@ -62,13 +62,24 @@ public class PhaseAttack extends Phase{
         int attackers = numOfAttackers[0];
         int defenders = defendingSector.getUnitsInSector();
 
-        float attackerDefenderDiff = Math.abs(defenders - attackers);
+        float propAttack = (float)attackers / (float)(attackers + defenders); // proportion of troops that are attackers
+        float propDefend = (float)defenders / (float)(attackers + defenders); // proportion of troops that are defenders
 
-        int attackersLost = Math.min(attackers, random.nextInt(10));
-        int defendersLost = Math.min(defenders, random.nextInt(10));
+        float propAttackersLost = (float)Math.max(0, Math.min(1, 0.02 * Math.exp(5 * propDefend) + 0.1 + (-0.125 + random.nextFloat()/4)));
+        float propDefendersLost = (float)Math.max(0, Math.min(1, 0.02 * Math.exp(5 * propAttack) + 0.15 + (-0.125 + random.nextFloat()/4)));
+
+        if (propAttack == 1) { // if attacking an empty sector then no attackers will be lost
+            propAttackersLost = 0;
+            propDefendersLost = 1;
+        }
+
+        int attackersLost = (int)(attackers * propAttackersLost);
+        int defendersLost = (int)(defenders * propDefendersLost);
 
         // apply the attack to the map
-        map.attackSector(attackingSector.getId(), defendingSector.getId(), attackersLost, defendersLost, gameScreen.getPlayerById(attackingSector.getOwnerId()), gameScreen.getPlayerById(defendingSector.getOwnerId()), gameScreen.getPlayerById(gameScreen.NEUTRAL_PLAYER_ID), this);
+        if (map.attackSector(attackingSector.getId(), defendingSector.getId(), attackersLost, defendersLost, gameScreen.getPlayerById(attackingSector.getOwnerId()), gameScreen.getPlayerById(defendingSector.getOwnerId()), gameScreen.getPlayerById(gameScreen.NEUTRAL_PLAYER_ID), this)) {
+            updateTroopReinforcementLabel();
+        }
     }
 
     private Vector2 convertScreenCoords(float screenX, float screenY) {
@@ -109,6 +120,8 @@ public class PhaseAttack extends Phase{
         super.endPhase();
         attackingSector = null;
         defendingSector = null;
+
+
     }
 
     @Override

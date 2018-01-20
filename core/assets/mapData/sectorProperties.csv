@@ -1,33 +1,33 @@
-0,hesEast1.png,Constantine,0,2,0,FALSE,1,1503,576,FALSE
-1,hesEast2.png,Langwith,1,2,0,FALSE,0 2 3,1348,626,FALSE
-2,hesEast3.png,Goodricke,2,2,0,FALSE,1 3 7 8 9,1182,594,FALSE
-3,hesEast4.png,Ron Cooke Hub,3,2,0,FALSE,1 2 5 6 7,1184,753,FALSE
-4,halifax1.png,Younger Court,4,2,1,FALSE,5,1052,998,FALSE
-5,halifax2.png,St Lawrence Court,5,2,1,FALSE,3 4 6,986,895,FALSE
-6,halifax3.png,Eden's Court,6,2,1,FALSE,5 3 7 27 28,925,798,FALSE
-7,halifax4.png,The Charles XII,7,2,1,FALSE,3 6 2 8 29,982,675,FALSE
-8,derwent4.png,Derwent South,8,2,2,FALSE,2 7 9 29,925,549,FALSE
-9,derwent2.png,Derwent Centre,9,2,2,FALSE,2 8 10 11 12,1044,483,FALSE
-10,derwent3.png,Derwent West,10,2,2,FALSE,9 12 15 16,891,394,FALSE
-11,derwent1.png,Derwent North,11,2,2,FALSE,9 12,1085,333,FALSE
-12,alcuin2.png,Alcuin East,12,2,3,FALSE,9 10 11 13 15,966,280,FALSE
-13,alcuin1.png,Alcuin Centre,13,2,3,FALSE,12 14 15,897,141,FALSE
-14,alcuin3.png,Alcuin West,14,2,3,FALSE,13 15 19,778,121,FALSE
-15,neutral6.png,Library,15,2,7,TRUE,10 12 13 14 16 18 19,768,226,FALSE
-16,neutral5.png,Hes West Doctors,16,2,7,TRUE,10 15 17 18,796,349,FALSE
-17,neutral4.png,Central Hall,17,2,7,TRUE,16 18 29,741,412,FALSE
-18,vanbrugh1.png,Vanbrugh East,18,2,4,FALSE,15 16 17 19 21,658,317,FALSE
-19,vanbrugh2.png,Vanbrugh Centre,19,2,4,FALSE,14 15 18 20 22,537,236,FALSE
-20,vanbrugh3.png,Vanbrugh West,20,2,4,FALSE,19 22,400,206,FALSE
-21,vanbrugh4.png,Vanbrugh South,21,2,4,FALSE,18 23 24,539,448,FALSE
-22,wentworth1.png,Wentworth North,22,2,5,FALSE,19 20 23,357,373,FALSE
-23,wentworth2.png,Wentworth South,23,2,5,FALSE,21 22 25,323,634,FALSE
-24,james3.png,James North,24,2,6,FALSE,21 25 30,547,529,FALSE
-25,james2.png,James Centre,25,2,6,FALSE,23 24 30 26,501,650,FALSE
-26,james1.png,Sports Centre,26,2,6,FALSE,25 27 28 30 23,559,794,FALSE
-27,james4.png,James West,27,2,6,FALSE,26 28 6,725,757,FALSE
-28,neutral2.png,Campus Centre South,28,2,7,TRUE,26 27 6 29,763,660,FALSE
-29,neutral3.png,Campus Centre East,29,2,7,TRUE,7 8 28 30,846,596,FALSE
-30,neutral1.png,Campus Centre West,30,2,7,TRUE,24 25 26 28 29,677,559,FALSE
-31,lake1.png,Lake1,31,2,7,TRUE,,0,653,TRUE
-32,lake2.png,Lake2,32,2,7,TRUE,,0,0,TRUE
+0,hesEast1.png,Constantine,0,2,Hes East,FALSE,1,1503,576,FALSE
+1,hesEast2.png,Langwith,1,2,Hes East,FALSE,0 2 3,1348,626,FALSE
+2,hesEast3.png,Goodricke,2,2,Hes East,FALSE,1 3 7 8 9,1182,594,FALSE
+3,hesEast4.png,Ron Cooke Hub,3,2,Hes East,FALSE,1 2 5 6 7,1184,753,FALSE
+4,halifax1.png,Younger Court,4,2,Halifax,FALSE,5,1052,998,FALSE
+5,halifax2.png,St Lawrence Court,5,2,Halifax,FALSE,3 4 6,986,895,FALSE
+6,halifax3.png,Eden's Court,6,2,Halifax,FALSE,5 3 7 27 28,925,798,FALSE
+7,halifax4.png,The Charles XII,7,2,Halifax,FALSE,3 6 2 8 29,982,675,FALSE
+8,derwent4.png,Derwent South,8,2,Derwent,FALSE,2 7 9 29,925,549,FALSE
+9,derwent2.png,Derwent Centre,9,2,Derwent,FALSE,2 8 10 11 12,1044,483,FALSE
+10,derwent3.png,Derwent West,10,2,Derwent,FALSE,9 12 15 16,891,394,FALSE
+11,derwent1.png,Derwent North,11,2,Derwent,FALSE,9 12,1085,333,FALSE
+12,alcuin2.png,Alcuin East,12,2,Alcuin,FALSE,9 10 11 13 15,966,280,FALSE
+13,alcuin1.png,Alcuin Centre,13,2,Alcuin,FALSE,12 14 15,897,141,FALSE
+14,alcuin3.png,Alcuin West,14,2,Alcuin,FALSE,13 15 19,778,121,FALSE
+15,neutral6.png,Library,15,2,The University of York,TRUE,10 12 13 14 16 18 19,768,226,FALSE
+16,neutral5.png,Hes West Doctors,16,2,The University of York,TRUE,10 15 17 18,796,349,FALSE
+17,neutral4.png,Central Hall,17,2,The University of York,TRUE,16 18 29 30,741,412,FALSE
+18,vanbrugh1.png,Vanbrugh East,18,2,Vanbrugh,FALSE,15 16 17 19 21,658,317,FALSE
+19,vanbrugh2.png,Vanbrugh Centre,19,2,Vanbrugh,FALSE,14 15 18 20 22,537,236,FALSE
+20,vanbrugh3.png,Vanbrugh West,20,2,Vanbrugh,FALSE,19 22,400,206,FALSE
+21,vanbrugh4.png,Vanbrugh South,21,2,Vanbrugh,FALSE,18 23 24,539,448,FALSE
+22,wentworth1.png,Wentworth North,22,2,Wentworth,FALSE,19 20 23,357,373,FALSE
+23,wentworth2.png,Wentworth South,23,2,Wentworth,FALSE,21 22 25,323,634,FALSE
+24,james3.png,James North,24,2,James,FALSE,21 25 30,547,529,FALSE
+25,james2.png,James Centre,25,2,James,FALSE,23 24 30 26,501,650,FALSE
+26,james1.png,Sports Centre,26,2,James,FALSE,25 27 28 30 23,559,794,FALSE
+27,james4.png,James West,27,2,James,FALSE,26 28 6,725,757,FALSE
+28,neutral2.png,Campus Centre South,28,2,The University of York,TRUE,26 27 6 29,763,660,FALSE
+29,neutral3.png,Campus Centre East,29,2,The University of York,TRUE,7 8 28 30,846,596,FALSE
+30,neutral1.png,Campus Centre West,30,2,The University of York,TRUE,17 24 25 26 28 29,677,559,FALSE
+31,lake1.png,Lake1,31,2,NA,TRUE,,0,653,TRUE
+32,lake2.png,Lake2,32,2,NA,TRUE,,0,0,TRUE

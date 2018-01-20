@@ -1,6 +1,8 @@
 package sepr.game;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -18,16 +20,18 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
  */
 public abstract class Phase extends Stage {
 
-    protected GameScreen gameScreen;
-    protected Map map;
-    protected Player currentPlayer;
+    GameScreen gameScreen;
+    Map map;
+    Player currentPlayer;
 
     private Table table;
     private Label bottomBarRightPart;
     private TurnPhaseType turnPhase;
 
+    private Label.LabelStyle playerNameStyle; // store style for updating player name colour with player's colour
+
     private Label playerNameLabel;
-    private Label additionalInformationLabel; // label for writing extra phase specific information, i.e. troops to allocate in the turn phase
+    private Label reinforcementLabel; // label showing how many troops the player has to allocate in their next reinforcement phase
     private Label turnTimerLabel;
     private Image collegeLogo;
 
@@ -57,11 +61,11 @@ public abstract class Phase extends Stage {
         endPhaseButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                gameScreen.advancePhase();
+                gameScreen.nextPhase();
             }
         });
         bottomBarRightPart = WidgetFactory.genGameHUDBottomBarRightPart("INIT");
-        Table bottomBarLeftPart = genGameHUDBottomBarLeftPart(GameSetupScreen.CollegeName.UNI_OF_YORK, "INIT", "INIT", "Turn Timer: DISABLED");
+        Table bottomBarLeftPart = genGameHUDBottomBarLeftPart();
 
         table.top().center();
         table.add(WidgetFactory.genGameHUDTopBar(turnPhase, new ChangeListener() {
@@ -90,19 +94,21 @@ public abstract class Phase extends Stage {
 
     /**
      * Generates the UI widget to be displayed at the bottom left of the HUD
-     * @param collegeName  name of college chosen by player
-     * @param playerName name of the player
-     * @param additionalInformation text for writing extra phase specific information, i.e. troops to allocate in the turn phase
-     * @param turnTimer time for the turn
      * @return table containing the information to display in the HUD
      */
-    private Table genGameHUDBottomBarLeftPart(GameSetupScreen.CollegeName collegeName, String playerName, String additionalInformation, String turnTimer){
+    private Table genGameHUDBottomBarLeftPart(){
         Label.LabelStyle style = new Label.LabelStyle();
+        playerNameStyle = new Label.LabelStyle();
+
+        // load fonts
         style.font = WidgetFactory.getFontSmall();
-        playerNameLabel = new Label(playerName, style);
-        additionalInformationLabel = new Label(additionalInformation, style);
-        turnTimerLabel = new Label(turnTimer, style);
-        collegeLogo = new Image(WidgetFactory.genCollegeLogoDrawable(collegeName));
+
+        playerNameStyle.font = WidgetFactory.getFontSmall();
+
+        playerNameLabel = new Label("", playerNameStyle);
+        reinforcementLabel = new Label("", style);
+        turnTimerLabel = new Label("Timer: DISABLED", style);
+        collegeLogo = new Image(WidgetFactory.genCollegeLogoDrawable(GameSetupScreen.CollegeName.UNI_OF_YORK));
 
         Table table = new Table();
         table.background(new TextureRegionDrawable(new TextureRegion(gameHUDBottomBarLeftPartTexture)));
@@ -112,7 +118,7 @@ public abstract class Phase extends Stage {
         subTable.left().add(collegeLogo).height(80).width(100).pad(0);
         subTable.right().add(playerNameLabel).pad(0);
         subTable.row();
-        subTable.add(additionalInformationLabel).colspan(2);
+        subTable.add(reinforcementLabel).colspan(2);
         subTable.row();
         subTable.add(turnTimerLabel).colspan(2);
 
@@ -130,29 +136,33 @@ public abstract class Phase extends Stage {
         if (sector == null) {
             this.bottomBarRightPart.setText("Mouse over a sector to see further details");
         } else {
-            this.bottomBarRightPart.setText("College: " + map.getCollegeById(sector.getCollegeId()).getDisplayName() + " - " + sector.getDisplayName() + " - " + "Owned By: " + gameScreen.getPlayerById(sector.getOwnerId()).getPlayerName() + " - " + "Grants +" + sector.getReinforcementsProvided() + " Troops");
+            this.bottomBarRightPart.setText("College: " + sector.getCollege() + " - " + sector.getDisplayName() + " - " + "Owned By: " + gameScreen.getPlayerById(sector.getOwnerId()).getPlayerName() + " - " + "Grants +" + sector.getReinforcementsProvided() + " Troops");
         }
     }
 
-    void enterPhase(Player player, String additionalInformation) {
+    void enterPhase(Player player) {
         this.currentPlayer = player;
+
+        playerNameStyle.fontColor = GameSetupScreen.getCollegeColor(currentPlayer.getCollegeName()); // update colour of player name
 
         playerNameLabel.setText(new StringBuilder((CharSequence) currentPlayer.getPlayerName()));
         collegeLogo.setDrawable(WidgetFactory.genCollegeLogoDrawable(player.getCollegeName()));
-        setAdditionalInformation(additionalInformation);
+        updateTroopReinforcementLabel();
     }
 
-
+    /**
+     * updates the text of the turn timer label
+     * @param timeRemaining time remaining of turn in seconds
+     */
     void setTimerValue(int timeRemaining) {
         turnTimerLabel.setText(new StringBuilder("Turn Timer: " + timeRemaining));
     }
 
     /**
-     * sets the text displayed on the additional information label
-     * @param additionalInformation
+     * updates the display of the number of troops the current player will have in their next reinforcement phase
      */
-    void setAdditionalInformation(String additionalInformation) {
-        this.additionalInformationLabel.setText(additionalInformation);
+    void updateTroopReinforcementLabel() {
+        this.reinforcementLabel.setText("Troop Allocation: " + currentPlayer.getTroopsToAllocate());
     }
 
     /**

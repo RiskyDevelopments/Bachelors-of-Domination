@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 
+import java.util.Random;
+
 /**
  * Created by Dom's Surface Mark 2 on 16/11/2017
  */
@@ -14,7 +16,7 @@ public class Sector {
     private String displayName;
     private int unitsInSector;
     private int reinforcementsProvided;
-    private int collegeId;
+    private String college;
     private boolean neutral;
     private int[] adjacentSectorIds; // <-- May want to reconsider structure
     private Texture sectorTexture;
@@ -31,7 +33,7 @@ public class Sector {
      * @param displayName sector display name
      * @param unitsInSector number of units in sector
      * @param reinforcementsProvided number of reinforcements the sector provides
-     * @param collegeId unique id of the college this sector belongs to
+     * @param college unique id of the college this sector belongs to
      * @param adjacentSectorIds ids of adjacent sectors
      * @param sectorTexture sector texture from assets
      * @param sectorPixmap pixmap of sector texture
@@ -40,13 +42,13 @@ public class Sector {
      * @param sectorCentreY ycoord of sector centre
      * @param decor false if a sector is accessible to a player and true if sector is decorative
      */
-    public Sector(int id, int ownerId, String fileName, Texture sectorTexture, Pixmap sectorPixmap, String displayName, int unitsInSector, int reinforcementsProvided, int collegeId, boolean neutral, int[] adjacentSectorIds, int sectorCentreX, int sectorCentreY, boolean decor) {
+    public Sector(int id, int ownerId, String fileName, Texture sectorTexture, Pixmap sectorPixmap, String displayName, int unitsInSector, int reinforcementsProvided, String college, boolean neutral, int[] adjacentSectorIds, int sectorCentreX, int sectorCentreY, boolean decor) {
         this.id = id;
         this.ownerId = ownerId;
         this.displayName = displayName;
         this.unitsInSector = unitsInSector;
         this.reinforcementsProvided = reinforcementsProvided;
-        this.collegeId = collegeId;
+        this.college = college;
         this.neutral = neutral;
         this.adjacentSectorIds = adjacentSectorIds;
         this.sectorTexture = sectorTexture;
@@ -129,7 +131,7 @@ public class Sector {
         return allocated;
     }
 
-    public int getCollegeId() { return collegeId; }
+    public String getCollege() { return college; }
 
     public String getFileName() {
         return fileName;

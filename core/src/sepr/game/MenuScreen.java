@@ -46,7 +46,7 @@ public class MenuScreen implements Screen {
     private Table setupMenuTable() {
         final TextButton startGameBtn = WidgetFactory.genBasicButton("START NEW GAME");
         final TextButton loadGameBtn = WidgetFactory.genBasicButton("LOAD GAME");
-        final TextButton optionsBtn = WidgetFactory.genBasicButton("OPTION");
+        final TextButton optionsBtn = WidgetFactory.genBasicButton("OPTIONS");
         final TextButton exitBtn = WidgetFactory.genBasicButton("QUIT");
 
         /* Create sub-table for all the menu buttons */

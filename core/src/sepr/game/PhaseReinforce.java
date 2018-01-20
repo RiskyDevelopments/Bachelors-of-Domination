@@ -14,10 +14,10 @@ public class PhaseReinforce extends Phase {
     }
 
     @Override
-    void enterPhase(Player player, String additionalInformation) {
-        super.enterPhase(player, "");
-        currentPlayer.addTroopsToAllocate(5 + map.calculateCollegeReinforcements(currentPlayer.getId())); // players get a basic reinforcement of 5 troops every turn and additional if they own all sectors in a college
-        setAdditionalInformation("Troop Allocation: " + currentPlayer.getTroopsToAllocate());
+    void enterPhase(Player player) {
+        super.enterPhase(player);
+        currentPlayer.addTroopsToAllocate(5); // players get a basic reinforcement of 5 troops every turn
+        updateTroopReinforcementLabel();
         DialogFactory.nextTurnDialogBox(currentPlayer.getPlayerName(), currentPlayer.getTroopsToAllocate(), this);
     }
 
@@ -38,7 +38,7 @@ public class PhaseReinforce extends Phase {
                 map.addUnitsToSectorAnimated(allocateUnits[1], allocateUnits[0]);
                 currentPlayer.addTroopsToAllocate(-allocateUnits[0]);
                 allocateUnits = null;
-                setAdditionalInformation("Troop Allocation: " + currentPlayer.getTroopsToAllocate());
+                updateTroopReinforcementLabel();
             }
         }
     }

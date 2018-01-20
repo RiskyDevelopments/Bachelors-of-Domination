@@ -20,7 +20,6 @@ import java.util.*;
  */
 public class Map{
     private HashMap<Integer, Sector> sectors; // mapping of sector ID to the sector object
-    private HashMap<Integer, College> colleges; // mapping of a college ID to the college object
     private List<UnitChangeParticle> particles; // graphics used to display the changes to the amount of units on a sector
 
     private BitmapFont font; // font for rendering sector unit data
@@ -31,14 +30,15 @@ public class Map{
 
     private int[] unitsToMove; // units to move from an attacking to conquered sector, 3 index array : [0] amount to move; [1] source sector id ; [2] target sector id
 
+    private Random random;
     /**
      * Performs the maps initial setup
      * Initialises the sectors as objects storing them in a HashMap
      * Initialises the sector colours storing them in a HashMap
      */
     public Map(HashMap<Integer, Player> players, boolean allocateNeutralPlayer) {
+        random = new Random();
         this.loadSectors();
-        this.loadColleges();
         font = WidgetFactory.getFontSmall();
 
         particles = new ArrayList<UnitChangeParticle>();
@@ -96,59 +96,23 @@ public class Map{
         Texture sectorTexture = new Texture("mapData/" + sectorData[1]);
         Pixmap sectorPixmap = new Pixmap(Gdx.files.internal("mapData/" + sectorData[1]));
         String displayName = sectorData[2];
-        int unitsInSector = Integer.parseInt(sectorData[3]);
+        int unitsInSector = 3 + random.nextInt(3);
         int reinforcementsProvided = Integer.parseInt(sectorData[4]);
-        int collegeId = Integer.parseInt(sectorData[5]);
+        String college = sectorData[5];
         boolean neutral = Boolean.parseBoolean(sectorData[6]);
         int[] adjacentSectors = strToIntArray(sectorData[7]);
         int sectorX = Integer.parseInt(sectorData[8]);
         int sectorY = Integer.parseInt(sectorData[9]);
         boolean decor = Boolean.parseBoolean(sectorData[10]);
 
-        return new Sector(sectorId, ownerId, filename, sectorTexture, sectorPixmap, displayName, unitsInSector, reinforcementsProvided, collegeId, neutral, adjacentSectors, sectorX, sectorY, decor);
-    }
-
-    /**
-     * Accesses collegeProperties.csv to load college data
-     */
-    private void loadColleges(){
-        this.colleges = new HashMap<Integer, College>();
-
-        String csvFile = "mapData/collegeProperties.csv";
-        String line = "";
-        Integer ID = 0;
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(csvFile));
-            while ((line = br.readLine()) != null) {
-                College temp = collegeDataToCollege(line.split(","));
-                this.colleges.put(temp.getId(), temp);
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     *
-     * @param collegeData a string array containing the properties of a college in the format <College name> <Bonus> <Sector IDs in college>
-     * @return College(collegeId, displayName, reinforcementAmount, sectorIds)
-     */
-    private College collegeDataToCollege(String[] collegeData){
-        int collegeId = Integer.parseInt(collegeData[0]);
-        String displayName = collegeData[1];
-        int reinforcementAmount = Integer.parseInt(collegeData[2]);
-        int[] sectorIds = strToIntArray(collegeData[3]);
-
-        return new College(collegeId, displayName, reinforcementAmount, sectorIds);
+        return new Sector(sectorId, ownerId, filename, sectorTexture, sectorPixmap, displayName, unitsInSector, reinforcementsProvided, college, neutral, adjacentSectors, sectorX, sectorY, decor);
     }
 
     /**
      * allocates sectors in the map to the players in a semi-random fashion
      * if there is a neutral player then the default neutral sectors are allocated to them
      * @param players the sectors are to be allocated to
-     * @param allocateNeutralPlayer
+     * @param allocateNeutralPlayer should the neutral player be allocated sectors
      * @throws RuntimeException if the players hashmap is empty
      */
     public void allocateSectors(HashMap<Integer, Player> players, boolean allocateNeutralPlayer) {
@@ -253,10 +217,13 @@ public class Map{
      * @param defender the player who is being attacked
      * @param neutral the neutral player
      * @param stage the stage to draw any dialogs to
+     * @return true if attack successful else false
      * @throws IllegalArgumentException if the amount of attackers lost exceeds the amount of attackers
      * @throws IllegalArgumentException if the amount of defenders lost exceeds the amount of attackers
      */
-    public void attackSector(int attackingSectorId, int defendingSectorId, int attackersLost, int defendersLost, Player attacker, Player defender, Player neutral, Stage stage) {
+    public boolean attackSector(int attackingSectorId, int defendingSectorId, int attackersLost, int defendersLost, Player attacker, Player defender, Player neutral, Stage stage) {
+        boolean success = false;
+
         if (sectors.get(attackingSectorId).getUnitsInSector() < attackersLost) {
             throw new IllegalArgumentException("Cannot loose more attackers than are on the sector: Attackers " + sectors.get(attackingSectorId).getUnitsInSector() + "     Attackers Lost " + attackersLost);
         }
@@ -289,10 +256,12 @@ public class Map{
             attacker.addTroopsToAllocate(sectors.get(defendingSectorId).getReinforcementsProvided());
             DialogFactory.attackSuccessDialogBox(sectors.get(defendingSectorId).getReinforcementsProvided(), sectors.get(attackingSectorId).getUnitsInSector(), unitsToMove, defender.getPlayerName(), attacker.getPlayerName(), sectors.get(defendingSectorId).getDisplayName(), stage);
             sectors.get(defendingSectorId).setOwner(attacker);
+            success = true;
         } else if (sectors.get(defendingSectorId).getUnitsInSector() == 0 && sectors.get(attackingSectorId).getUnitsInSector() == 1) { // territory conquered but only one attacker remaining so can't move troops onto it
             DialogFactory.sectorOwnerChangeDialog(defender.getPlayerName(), neutral.getPlayerName(), sectors.get(defendingSectorId).getDisplayName(), stage);
             sectors.get(defendingSectorId).setOwner(neutral);
         }
+        return true;
     }
 
     /**
@@ -306,28 +275,6 @@ public class Map{
     }
 
     /**
-     * calculates how many reinforcements the given player should receive based which colleges they own
-     * @param playerId player who calculation is for
-     * @return returns the amount of reinforcements the player should be allocated
-     */
-    public int calculateCollegeReinforcements(int playerId) {
-        int bonus = 0;
-        for (College college : colleges.values()) {
-            boolean collegeHeld = true;
-            for (int i : college.getSectorIds()) {
-                if (i != playerId) {
-                    collegeHeld = false; // owner that is not the player so college is not held
-                    break;
-                }
-            }
-            if (collegeHeld) {
-                bonus += college.getReinforcementAmount();
-            }
-        }
-        return bonus;
-    }
-
-    /**
      *
      * @param sectorId id of the desired sector
      * @return Sector object with the corresponding id in hashmap sectors if no sector matches with the supplied id then null is returned
@@ -338,10 +285,6 @@ public class Map{
         } else {
             return null;
         }
-    }
-
-    public College getCollegeById(int collegeId) {
-        return colleges.get(collegeId);
     }
 
     /**

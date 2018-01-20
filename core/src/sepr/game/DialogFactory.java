@@ -30,11 +30,7 @@ public class DialogFactory {
      * @param stage to draw the box onto
      */
     public static void basicDialogBox(String title, String message, Stage stage) {
-        Dialog dialog = new Dialog(title, DialogFactory.skin) {
-            protected void result(Object object) {
-                // no processing required, just allow box to close
-            }
-        };
+        Dialog dialog = new Dialog(title, DialogFactory.skin);
         dialog.text(message);
         dialog.button("Ok", "0");
         dialog.show(stage);
@@ -175,7 +171,8 @@ public class DialogFactory {
      */
     public static void attackDialog(Stage stage, int maxAttackers, int defenders, final int[] attackers) {
         final Slider slider = new Slider(1, maxAttackers, 1, false, DialogFactory.skin);
-        final Label sliderValue = new Label("1", DialogFactory.skin); // label showing the value of the slider
+        slider.setValue(maxAttackers);
+        final Label sliderValue = new Label(maxAttackers + "", DialogFactory.skin); // label showing the value of the slider
         slider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -210,6 +207,44 @@ public class DialogFactory {
         dialog.button("Cancel", "0").padLeft(20).padRight(40).align(Align.center);
         dialog.button("Ok", "1").padLeft(40).padRight(20).align(Align.center);
 
+        dialog.show(stage);
+    }
+
+    /**
+     * dialog that displays a list of players that have been eliminated
+     * @param playerNames players that have been eliminated
+     * @param stage to draw the box to
+     */
+    public static void playersOutDialog(String[] playerNames, Stage stage) {
+        Dialog dialog = new Dialog("Elimination!", DialogFactory.skin);
+        String message = "The following player has been eliminated:";
+        if (playerNames.length > 1) {
+            message = "The following players have been eliminated:";
+        }
+        for (String s : playerNames) {
+            message += "\n    " + s;
+        }
+        dialog.text(message);
+        dialog.button("Ok", "0");
+        dialog.show(stage);
+    }
+
+    /**
+     * dialog displayed when a player has won the game
+     *
+     * @param playerName name of player who has won
+     * @param collegeName name of the winning player's college
+     * @param main for changing back to the menu screen
+     * @param stage to draw the dialog to
+     */
+    public static void gameOverDialog(String playerName, String collegeName, final Main main, Stage stage) {
+        Dialog dialog = new Dialog("Game Over!", DialogFactory.skin) {
+            protected void result(Object object) {
+                main.setMenuScreen();
+            }
+        };
+        dialog.text("Game Over!\n" + playerName + " of College " + collegeName + " has conquered the University of York!");
+        dialog.button("Ok", "0");
         dialog.show(stage);
     }
 }
