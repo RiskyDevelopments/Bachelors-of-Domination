@@ -25,3 +25,13 @@ hs_err_pid*
 .idea/
 *.iws
 out/
+*.iml
+*.ipr
+
+
+# Gradle Files
+.gradle/*/fileChanges/
+.gradle/*/fileHashes/
+.gradle/*/taskHistory/
+.gradle/buildOutputCleanup
+.gradle/vcsWorkingDirs/gc.properties
