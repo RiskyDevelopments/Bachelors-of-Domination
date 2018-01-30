@@ -1,6 +1,15 @@
 package sepr.game.saveandload;
 
 public class GameStateJSON {
+    public String currentPhase;
+    public MapStateJSON map;
+    public PlayerHashMapJSON[] players;
+    public boolean turnTimerEnabled;
+    public int maxTurnTime;
+    public long turnTimeStart;
+    public Integer[] turnOrder;
+    public int currentPlayerPointer;
+
     public class MapStateJSON {
         SectorHashMapJSON[] sectors;
     }
@@ -17,6 +26,11 @@ public class GameStateJSON {
     public class SectorHashMapJSON {
         public int id;
         public SectorStateJSON sector;
+    }
+
+    public class PlayerHashMapJSON {
+        public int id;
+        public PlayerStateJSON player;
     }
 
     public class SectorStateJSON {

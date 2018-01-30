@@ -8,24 +8,23 @@ import java.util.HashMap;
 import java.util.List;
 
 public class GameState {
-    private TurnPhaseType currentPhase;
-    private Map map;
-    private HashMap<Integer, Player> players;
-    private boolean turnTimerEnabled;
-    private int maxTurnTime;
-    private long turnTimeStart;
-    private List<Integer> turnOrder;
-    private int currentPlayerPointer;
+    public TurnPhaseType currentPhase;
+    public Map map;
+    public HashMap<Integer, Player> players;
+    public PlayerState[] playerStates;
+    public boolean turnTimerEnabled;
+    public int maxTurnTime;
+    public long turnTimeStart;
+    public List<Integer> turnOrder;
+    public int currentPlayerPointer;
 
     public class MapState {
         public HashMap<Integer, Sector> sectors;
-    }
-
-    public class OptionsState {
-
+        public SectorState[] sectorStates;
     }
 
     public class PlayerState {
+        public int hashMapPosition;
         public int id;
         public GameSetupScreen.CollegeName collegeName;
         public String playerName;
@@ -35,6 +34,7 @@ public class GameState {
     }
 
     public class SectorState {
+        public int hashMapPosition;
         public int id;
         public int ownerId;
         public String displayName;

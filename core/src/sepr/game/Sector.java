@@ -235,4 +235,8 @@ public class Sector {
         this.setNewSectorTexture(newPix); // draw the generated pixmap to the new texture
         newPix.dispose();
     }
+
+    public int[] getAdjacentSectorIds() {
+        return this.adjacentSectorIds;
+    }
 }
