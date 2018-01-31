@@ -1,4 +1,4 @@
-package sepr.game;
+package sepr.game.utils;
 
 /**
  * Possible types of player
@@ -29,5 +29,10 @@ public enum PlayerType {
             if (playerType.getPlayerType().equals(text)) return playerType;
         }
         throw new IllegalArgumentException("Text parameter must match one of the enums");
+    }
+
+    @Override
+    public String toString() {
+        return this.shortCode;
     }
 }

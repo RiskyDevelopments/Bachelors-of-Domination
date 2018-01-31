@@ -358,4 +358,8 @@ public class Map{
         }
         particles.removeAll(toDelete);
     }
+
+    public HashMap<Integer, Sector> getSectors() {
+        return sectors;
+    }
 }

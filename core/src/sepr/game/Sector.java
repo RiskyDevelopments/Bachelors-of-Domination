@@ -108,7 +108,7 @@ public class Sector {
 
     /**
      *
-     * @return the texture used for drawing the sector
+     * @return the texture used for drawing the sectorNeutral
      */
     public Texture getSectorTexture() {
         return sectorTexture;
@@ -234,5 +234,9 @@ public class Sector {
         }
         this.setNewSectorTexture(newPix); // draw the generated pixmap to the new texture
         newPix.dispose();
+    }
+
+    public int[] getAdjacentSectorIds() {
+        return this.adjacentSectorIds;
     }
 }

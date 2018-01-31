@@ -9,6 +9,8 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import sepr.game.utils.PlayerType;
+import sepr.game.utils.TurnPhaseType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -71,6 +73,7 @@ public class GameScreen implements Screen, InputProcessor{
         this.keysDown.put(Input.Keys.LEFT, false);
         this.keysDown.put(Input.Keys.DOWN, false);
         this.keysDown.put(Input.Keys.RIGHT, false);
+        this.keysDown.put(Input.Keys.S, false);
     }
 
     /**
@@ -450,6 +453,9 @@ public class GameScreen implements Screen, InputProcessor{
         if (keycode == Input.Keys.ESCAPE) {
             DialogFactory.leaveGameDialogBox(this, phases.get(currentPhase)); // confirm if the player wants to leave if escape is pressed
         }
+        if (keycode == Input.Keys.S) {
+            this.main.SaveGame();
+        }
         return true;
     }
 
@@ -492,5 +498,33 @@ public class GameScreen implements Screen, InputProcessor{
             gameplayCamera.zoom += amount * 0.03f;
         }
         return true;
+    }
+
+    public TurnPhaseType getCurrentPhase(){
+        return this.currentPhase;
+    }
+
+    public HashMap<Integer, Player> getPlayers() {
+        return players;
+    }
+
+    public boolean isTurnTimerEnabled(){
+        return this.turnTimerEnabled;
+    }
+
+    public int getMaxTurnTime(){
+        return this.maxTurnTime;
+    }
+
+    public long getTurnTimeStart(){
+        return this.turnTimeStart;
+    }
+
+    public List<Integer> getTurnOrder(){
+        return this.turnOrder;
+    }
+
+    public int getCurrentPlayerPointer(){
+        return this.currentPlayerPointer;
     }
 }
