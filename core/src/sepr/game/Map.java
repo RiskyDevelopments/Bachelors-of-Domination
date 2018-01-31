@@ -1,6 +1,7 @@
 package sepr.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -15,12 +16,15 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
+import static com.badlogic.gdx.graphics.g3d.particles.ParticleChannels.Color;
+
 /**
  * stores the game map and the sectors within it
  */
 public class Map{
     private HashMap<Integer, Sector> sectors; // mapping of sector ID to the sector object
     private List<UnitChangeParticle> particles; // list of active particle effects displaying the changes to the amount of units on a sector
+    private PVC proViceChancellor = new PVC(1,3);
 
     private BitmapFont font; // font for rendering sector unit data
     private GlyphLayout layout = new GlyphLayout();
@@ -126,6 +130,8 @@ public class Map{
         }
     }
 
+
+
     /**
      * allocates sectors in the map to the players in a semi-random fashion
      * if there is a neutral player then the default neutral sectors are allocated to them
@@ -175,6 +181,30 @@ public class Map{
     }
 
     /**
+     * calls the pvc class to see if the PVC tile should spawn
+     * @return true if the PVC will spawn on a tile
+
+     */
+
+    public boolean ShouldPVCSpawn()
+    {
+        return proViceChancellor.PVCSpawn();
+    }
+
+    /**
+     * spawns the PVC
+     */
+
+    public void spawnPVC()
+    {
+       Random rand =  new Random();
+       int sectorId  = rand.nextInt(sectors.size());
+       Sector chosenSector = sectors.get(sectorId);
+       chosenSector.changeSectorColor(com.badlogic.gdx.graphics.Color.YELLOW);
+
+    }
+
+    /**
      * processes an attack from one sector to another
      * triggers specific dialogs dependent on the outcome of the attack
      * controls reassigning owners dependent on the outcome of the attack
@@ -193,6 +223,8 @@ public class Map{
      * @throws IllegalArgumentException if the amount of attackers lost exceeds the amount of attackers
      * @throws IllegalArgumentException if the amount of defenders lost exceeds the amount of attackers
      */
+
+
     public boolean attackSector(int attackingSectorId, int defendingSectorId, int attackersLost, int defendersLost, Player attacker, Player defender, Player neutral, Stage stage) {
         if (sectors.get(attackingSectorId).getUnitsInSector() < attackersLost) {
             throw new IllegalArgumentException("Cannot loose more attackers than are on the sector: Attackers " + sectors.get(attackingSectorId).getUnitsInSector() + "     Attackers Lost " + attackersLost);
@@ -234,6 +266,7 @@ public class Map{
         }
         return true;
     }
+
 
     /**
      * adds the specified number of units to this sector and sets up drawing a particle effect showing the addition

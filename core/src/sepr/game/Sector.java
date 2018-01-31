@@ -24,6 +24,7 @@ public class Sector {
     private boolean decor; // is this sector for visual purposes only, i.e. lakes are decor
     private String fileName;
     private boolean allocated; // becomes true once the sector has been allocated
+    private boolean isPVCTile;
 
     /**
      * @param id sector id
@@ -81,6 +82,20 @@ public class Sector {
         this.changeSectorColor(player.getSectorColour());
         this.allocated = true;
     }
+
+
+    /**
+     *
+     * @return if sector is PVC sector
+     */
+    public boolean getIsPVCTile() { return isPVCTile; }
+
+    /**
+     *
+     * @return if sector is PVC sector
+     */
+    public void setIsPVCTile(boolean value) { this.isPVCTile = value; }
+
 
     /**
      *
@@ -216,7 +231,7 @@ public class Sector {
      * @param newColor what color the sector be changed to
      * @throws RuntimeException if attempt to recolor a decor sector
      */
-    private void changeSectorColor(Color newColor){
+    public void changeSectorColor(Color newColor){
         if (this.isDecor()) {
             throw new RuntimeException("Should not recolour decor sector");
         }

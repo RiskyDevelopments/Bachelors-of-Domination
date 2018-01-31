@@ -191,6 +191,7 @@ public class GameScreen implements Screen, InputProcessor{
     protected void nextPhase() {
         this.phases.get(currentPhase).endPhase();
 
+
         switch (currentPhase) {
             case REINFORCEMENT:
                 currentPhase = TurnPhaseType.ATTACK;
@@ -200,6 +201,9 @@ public class GameScreen implements Screen, InputProcessor{
                 break;
             case MOVEMENT:
                 currentPhase = TurnPhaseType.REINFORCEMENT;
+
+                if(map.ShouldPVCSpawn()) {map.spawnPVC();}
+
                 nextPlayer(); // nextPhase called during final phase of a player's turn so goto next player
                 break;
         }
