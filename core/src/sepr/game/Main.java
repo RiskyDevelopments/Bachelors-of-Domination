@@ -5,6 +5,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.GL20;
+import sepr.game.saveandload.SaveLoadManager;
 
 import java.util.HashMap;
 
@@ -18,6 +19,7 @@ public class Main extends Game implements ApplicationListener {
 	private GameScreen gameScreen;
 	private OptionsScreen optionsScreen;
 	private GameSetupScreen gameSetupScreen;
+	private SaveLoadManager saveLoadManager;
 
 	/**
 	 * Setup the screens and set the first screen as the menu
@@ -31,6 +33,7 @@ public class Main extends Game implements ApplicationListener {
 		this.gameScreen = new GameScreen(this);
 		this.optionsScreen = new OptionsScreen(this);
 		this.gameSetupScreen = new GameSetupScreen(this);
+		this.saveLoadManager = new SaveLoadManager(this, gameScreen);
 
 		applyPreferences();
 
@@ -108,5 +111,9 @@ public class Main extends Game implements ApplicationListener {
 		gameSetupScreen.dispose();
 		gameScreen.dispose();
 	}
+
+	public void SaveGame(){
+        this.saveLoadManager.SaveByID(this.saveLoadManager.GetCurrentSaveID()); // TODO get next id/current id
+    }
 
 }
