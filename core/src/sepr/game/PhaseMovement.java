@@ -1,6 +1,7 @@
 package sepr.game;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import sepr.game.utils.TurnPhaseType;
 
 /**
  * handles input, updating and rendering for the movement phase

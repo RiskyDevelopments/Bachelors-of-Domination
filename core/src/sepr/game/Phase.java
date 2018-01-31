@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import sepr.game.utils.TurnPhaseType;
 
 /**
  * base class for handling phase specific input
@@ -198,4 +199,18 @@ public abstract class Phase extends Stage {
      * @param batch
      */
     protected abstract void visualisePhase(SpriteBatch batch);
+
+    @Override
+    public String toString() {
+        switch(this.turnPhase){
+            case ATTACK:
+                return "PHASE_ATTACK";
+            case MOVEMENT:
+                return "PHASE_MOVEMENT";
+            case REINFORCEMENT:
+                return "PHASE_REINFORCEMENT";
+            default:
+                return "PHASE_BLANK";
+        }
+    }
 }

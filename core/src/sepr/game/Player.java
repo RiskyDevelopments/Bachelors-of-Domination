@@ -1,6 +1,7 @@
 package sepr.game;
 
 import com.badlogic.gdx.graphics.Color;
+import sepr.game.utils.PlayerType;
 
 /**
  * base class for storing Neutral and Human player data

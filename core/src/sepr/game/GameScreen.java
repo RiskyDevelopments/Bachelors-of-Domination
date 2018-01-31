@@ -9,7 +9,8 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import sepr.game.saveandload.GameState;
+import sepr.game.utils.PlayerType;
+import sepr.game.utils.TurnPhaseType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -520,7 +521,7 @@ public class GameScreen implements Screen, InputProcessor{
     }
 
     public List<Integer> getTurnOrder(){
-        return this.getTurnOrder();
+        return this.turnOrder;
     }
 
     public int getCurrentPlayerPointer(){

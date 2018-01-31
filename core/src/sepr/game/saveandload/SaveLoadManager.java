@@ -3,6 +3,7 @@ package sepr.game.saveandload;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.lwjgl.Sys;
 import sepr.game.GameScreen;
 import sepr.game.Main;
 import sepr.game.Player;
@@ -58,7 +59,7 @@ public class SaveLoadManager {
 
                 JSONObject savesTemplate = new JSONObject();
                 savesTemplate.put("Saves", this.numberOfSaves);
-                savesTemplate.put("SaveID", this.currentSaveID);
+                savesTemplate.put("CurrentSaveID", this.currentSaveID);
 
                 try {
                     FileWriter fileWriter = new FileWriter(this.SAVE_FILE_PATH);
@@ -131,7 +132,6 @@ public class SaveLoadManager {
             sectorState.college = value.getCollege();
             sectorState.neutral = value.isNeutral();
             sectorState.adjacentSectorIds = value.getAdjacentSectorIds();
-            sectorState.sectorTexture = value.getSectorTexture();
             sectorState.sectorCentreX = value.getSectorCentreX();
             sectorState.sectorCentreY = value.getSectorCentreY();
             sectorState.decor = value.isDecor();
@@ -139,11 +139,13 @@ public class SaveLoadManager {
             sectorState.allocated = value.isAllocated();
 
             mapState.sectorStates[i] = sectorState;
+
+            i++;
         }
 
         mapState.sectors = null;
-
-        i++;
+        gameState.map = null;
+        gameState.mapState = mapState;
 
         gameState.playerStates = new GameState.PlayerState[gameState.players.size()];
 
@@ -167,6 +169,21 @@ public class SaveLoadManager {
         }
 
         gameState.players = null;
+
+        JSONObject newSave = new JSONObject();
+        newSave.put("Saves", this.numberOfSaves);
+        newSave.put("CurrentSaveID", this.currentSaveID);
+
+        JSONifier jifier = new JSONifier(gameState);
+        newSave.put("GameState", jifier.getJSONGameState());
+
+        try {
+            FileWriter fileWriter = new FileWriter(this.SAVE_FILE_PATH);
+            fileWriter.write(newSave.toJSONString());
+            fileWriter.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return false;
     }

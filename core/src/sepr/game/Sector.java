@@ -108,7 +108,7 @@ public class Sector {
 
     /**
      *
-     * @return the texture used for drawing the sector
+     * @return the texture used for drawing the sectorNeutral
      */
     public Texture getSectorTexture() {
         return sectorTexture;
