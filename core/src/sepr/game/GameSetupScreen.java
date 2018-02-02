@@ -384,6 +384,7 @@ public class GameSetupScreen implements Screen{
 
         // setup neutral player
         players.put(GameScreen.NEUTRAL_PLAYER_ID, Player.createNeutralPlayer(GameScreen.NEUTRAL_PLAYER_ID));
+        players.put(GameScreen.UNASSIGNED_ID, Player.createUnassginedPlayer(GameScreen.UNASSIGNED_ID) );
         return players;
     }
 

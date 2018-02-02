@@ -23,6 +23,7 @@ import java.util.List;
  */
 public class GameScreen implements Screen, InputProcessor{
     public static final int NEUTRAL_PLAYER_ID = 4;
+    public static final int UNASSIGNED_ID = 5;
 
     private Main main; // main stored for switching between screens
 

@@ -78,6 +78,8 @@ public class Sector {
      * @param player the player object that owns this sector
      */
     public void setOwner(Player player) {
+
+
         this.ownerId = player.getId();
         this.changeSectorColor(player.getSectorColour());
         this.allocated = true;
