@@ -13,7 +13,7 @@ public class DesktopLauncher {
 
         config.width = 1920;
         config.height = 1080;
-        config.resizable = false;
+        config.resizable = true;
         config.samples = 8; // Anti aliasing sampling
 
 		new LwjglApplication(new Main(), config);
