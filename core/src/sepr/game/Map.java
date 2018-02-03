@@ -249,6 +249,7 @@ public class Map{
        Random rand =  new Random();
        int sectorId  = rand.nextInt(sectors.size());
        Sector chosenSector = sectors.get(sectorId);
+       chosenSector.setIsPVCTile(true);
        chosenSector.changeSectorColor(com.badlogic.gdx.graphics.Color.YELLOW);
 
     }
@@ -304,6 +305,13 @@ public class Map{
             unitsToMove[0] = -1;
             unitsToMove[1] = attackingSectorId;
             unitsToMove[2] = defendingSectorId;
+
+            if(sectors.get(defendingSectorId).getIsPVCTile()) //if the player takes over PVC tile add PVC bonus
+            {
+                defender.setOwnsPVC(false);
+                attacker.setOwnsPVC(true);
+                DialogFactory.TakenOverPVCDialogue(stage);
+            }
 
             attacker.addTroopsToAllocate(sectors.get(defendingSectorId).getReinforcementsProvided());
             DialogFactory.attackSuccessDialogBox(sectors.get(defendingSectorId).getReinforcementsProvided(), sectors.get(attackingSectorId).getUnitsInSector(), unitsToMove, defender.getPlayerName(), attacker.getPlayerName(), sectors.get(defendingSectorId).getDisplayName(), stage);

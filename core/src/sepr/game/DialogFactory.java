@@ -273,4 +273,17 @@ public class DialogFactory {
         dialog.button("Ok", "0");
         dialog.show(stage);
     }
+
+
+
+
+    /**
+     * creates a dialog box displaying informing the player they have taken over the PVC tile
+     *
+     * @param stage to draw the box onto
+     */
+    public static void TakenOverPVCDialogue(Stage stage) {
+        basicDialogBox("Pro Vice Chancellor tile captured","Well done you have found and captured the Pro Vice Chancellor tile. You now get extra 2 bonus troops per turn from this tile",stage);
+    }
+
 }

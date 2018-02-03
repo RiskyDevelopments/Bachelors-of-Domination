@@ -20,6 +20,8 @@ import sepr.game.utils.TurnPhaseType;
 public abstract class Phase extends Stage {
     GameScreen gameScreen;
     Player currentPlayer;
+    Player previousPlayer;
+
 
     private Table table;
     private Label bottomBarRightPart;
@@ -145,6 +147,7 @@ public abstract class Phase extends Stage {
      */
     void enterPhase(Player player) {
         this.currentPlayer = player;
+
 
         playerNameStyle.fontColor = GameSetupScreen.getCollegeColor(currentPlayer.getCollegeName()); // update colour of player name
 

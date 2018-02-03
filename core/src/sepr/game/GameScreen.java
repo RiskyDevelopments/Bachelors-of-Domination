@@ -47,6 +47,7 @@ public class GameScreen implements Screen, InputProcessor{
 
     private List<Integer> turnOrder; // array of player ids in order of players' turns;
     private int currentPlayerPointer; // index of current player in turnOrder list
+    private int previousPlayerPointer; // index of the previous player in turnOrder list
 
     private Texture mapBackground; // texture for drawing as a background behind the game
 
@@ -89,10 +90,11 @@ public class GameScreen implements Screen, InputProcessor{
         this.players = players;
         this.turnOrder = new ArrayList<Integer>();
         for (Integer i : players.keySet()) {
-            if (players.get(i).getPlayerType() != PlayerType.NEUTRAL_AI) { // don't add the neutral player to the turn order
+            if ((players.get(i).getPlayerType() != PlayerType.NEUTRAL_AI) && (players.get(i).getPlayerType() != PlayerType.UN_ASSGINED)) { // don't add the neutral player or unassigned to the turn order
                 this.turnOrder.add(i);
             }
         }
+
 
         this.currentPlayerPointer = 0; // set the current player to the player in the first position of the turnOrder list
 
@@ -164,6 +166,15 @@ public class GameScreen implements Screen, InputProcessor{
         return players.get(id);
     }
 
+
+    /**
+     *
+     * @return gets the player object for the player who's turn it currently is
+     */
+    private Player getPreviousPlayer() {
+        return players.get(turnOrder.get(previousPlayerPointer));
+    }
+
     /**
      *
      * @return gets the player object for the player who's turn it currently is
@@ -222,6 +233,7 @@ public class GameScreen implements Screen, InputProcessor{
      * increments the currentPlayerPointer and resets it to 0 if it now exceeds the number of players in the list
      */
     private void nextPlayer() {
+        previousPlayerPointer = currentPlayerPointer;
         currentPlayerPointer++;
         if (currentPlayerPointer == turnOrder.size()) { // reached end of players, reset to 0
             currentPlayerPointer = 0;
