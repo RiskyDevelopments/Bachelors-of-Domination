@@ -77,11 +77,13 @@ public class PhaseMovement extends Phase {
      * carries out attack once number of attackers has been set using the dialog
      */
     private void moveTroops() {
-        
+
+        int attackersLost = numOfAttackers[0];
         int defendersLost = numOfAttackers[0];
 
+
         // apply the attack to the map
-        if (gameScreen.getMap().attackSector(attackingSector.getId(), defendingSector.getId(), 0, defendersLost, gameScreen.getPlayerById(attackingSector.getOwnerId()), gameScreen.getPlayerById(defendingSector.getOwnerId()), gameScreen.getPlayerById(gameScreen.UNASSIGNED_ID), this)) {
+        if (gameScreen.getMap().moveTroops(attackingSector.getId(), defendingSector.getId(), attackersLost, defendersLost, gameScreen.getPlayerById(attackingSector.getOwnerId()), gameScreen.getPlayerById(defendingSector.getOwnerId()), gameScreen.getPlayerById(gameScreen.UNASSIGNED_ID), this)) {
 
 
             updateTroopReinforcementLabel();
@@ -94,13 +96,14 @@ public class PhaseMovement extends Phase {
     @Override
     public void phaseAct() {
 
-        System.out.println("pass");
-        if (attackingSector != null && defendingSector != null ) {
+
+        if (attackingSector != null && defendingSector != null && numOfAttackers[0] != -1) {
+
             if (numOfAttackers[0] == 0) {
 
                 // cancel attack
             }
-            else if(attackingSector.getUnitsInSector() == 0 && !attackingSector.isAllocated()){
+            else if(defendingSector.getUnitsInSector() == 0 && defendingSector.getOwnerId() == 5){
                 moveTroops();
             }
             // reset attack

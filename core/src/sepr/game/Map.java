@@ -245,8 +245,8 @@ public class Map{
         ArrayList<Sector> avaliableSectors = new ArrayList<Sector>();
         Sector chosenSector;
 
-        for (Sector x : sectors.values()) { //
-            if (!x.isAllocated() && !x.isDecor()) {
+        for (Sector x : sectors.values()) {
+            if (x.getOwnerId() == 5 && !x.isDecor()) {
                 avaliableSectors.add(x);
             }
         }
@@ -335,6 +335,16 @@ public class Map{
             DialogFactory.sectorOwnerChangeDialog(defender.getPlayerName(), unAssigned.getPlayerName(), sectors.get(defendingSectorId).getDisplayName(), stage);
             sectors.get(defendingSectorId).setOwner(unAssigned);
         }
+        return true;
+    }
+
+
+    public Boolean moveTroops(int attackingSectorId, int defendingSectorId, int attackersLost, int defendersLost, Player attacker, Player defender, Player unAssigned, Stage stage){
+
+        addUnitsToSectorAnimated(attackingSectorId, -attackersLost); // apply amount of attacking units lost
+        addUnitsToSectorAnimated(defendingSectorId, defendersLost); // apply amount of defending units lost
+        sectors.get(defendingSectorId).setOwner(attacker);
+
         return true;
     }
 
