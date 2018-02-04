@@ -217,7 +217,7 @@ public class GameScreen implements Screen, InputProcessor{
             case MOVEMENT:
                 currentPhase = TurnPhaseType.REINFORCEMENT;
 
-                if(map.ShouldPVCSpawn()) {map.spawnPVC();}
+                if(map.ShouldPVCSpawn()) {map.spawnPVC(phases.get(currentPhase));}
 
                 nextPlayer(); // nextPhase called during final phase of a player's turn so goto next player
                 break;

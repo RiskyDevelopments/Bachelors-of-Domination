@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Array;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import javax.swing.plaf.synth.SynthStyle;
@@ -108,7 +109,7 @@ public class Map{
         Texture sectorTexture = new Texture("mapData/" + sectorData[1]);
         Pixmap sectorPixmap = new Pixmap(Gdx.files.internal("mapData/" + sectorData[1]));
         String displayName = sectorData[2];
-        int unitsInSector = 3 + random.nextInt(3);
+        int unitsInSector = 0;
         int reinforcementsProvided = Integer.parseInt(sectorData[4]);
         String college = sectorData[5];
         boolean neutral = Boolean.parseBoolean(sectorData[6]);
@@ -189,8 +190,7 @@ public class Map{
      */
 
 
-    public void allocateSectors2(HashMap<Integer, Player> players, boolean allocateNeutralPlayer)
-    {
+    public void allocateSectors2(HashMap<Integer, Player> players, boolean allocateNeutralPlayer) {
         if (players.size() == 0) {
             throw new RuntimeException("Cannot allocate sectors to 0 players");
         }
@@ -221,22 +221,18 @@ public class Map{
             }
         }
 
-        for(Integer i : sectorIdsRandOrder)
-
+        for (Integer i : sectorIdsRandOrder)
         {
-
-            if(!getSectorById(i).isAllocated() && !getSectorById(i).isDecor())
-            {
+            if (!getSectorById(i).isAllocated() && !getSectorById(i).isDecor()) {
                 getSectorById(i).setOwner(players.get(GameScreen.UNASSIGNED_ID));
             }
         }
-
-
     }
 
 
     public boolean ShouldPVCSpawn()
     {
+
         return proViceChancellor.PVCSpawn();
     }
 
@@ -244,13 +240,26 @@ public class Map{
      * spawns the PVC
      */
 
-    public void spawnPVC()
-    {
-       Random rand =  new Random();
-       int sectorId  = rand.nextInt(sectors.size());
-       Sector chosenSector = sectors.get(sectorId);
-       chosenSector.setIsPVCTile(true);
-       chosenSector.changeSectorColor(com.badlogic.gdx.graphics.Color.YELLOW);
+    public void spawnPVC(Stage stage) {
+        Random rand = new Random();
+        ArrayList<Sector> avaliableSectors = new ArrayList<Sector>();
+        Sector chosenSector;
+
+        for (Sector x : sectors.values()) { //
+            if (!x.isAllocated() && !x.isDecor()) {
+                avaliableSectors.add(x);
+            }
+        }
+
+        if (avaliableSectors.isEmpty()) {
+            chosenSector = sectors.get(rand.nextInt(sectors.size())); //if all sectors are occupied then choose a random for sector for the PVC
+        } else {
+            chosenSector = avaliableSectors.get(rand.nextInt(avaliableSectors.size())); //place PVC on an unallocated sector
+        }
+
+        chosenSector.setIsPVCTile(true);
+        DialogFactory.PVCSpawnedMessage(stage);
+        chosenSector.changeSectorColor(com.badlogic.gdx.graphics.Color.GOLD);
 
     }
 
@@ -306,16 +315,21 @@ public class Map{
             unitsToMove[1] = attackingSectorId;
             unitsToMove[2] = defendingSectorId;
 
+
+
+            attacker.addTroopsToAllocate(sectors.get(defendingSectorId).getReinforcementsProvided());
+            sectors.get(defendingSectorId).setOwner(attacker);
+
             if(sectors.get(defendingSectorId).getIsPVCTile()) //if the player takes over PVC tile add PVC bonus
             {
                 defender.setOwnsPVC(false);
                 attacker.setOwnsPVC(true);
                 DialogFactory.TakenOverPVCDialogue(stage);
+                sectors.get(defendingSectorId).changeSectorColor(com.badlogic.gdx.graphics.Color.YELLOW);
             }
-
-            attacker.addTroopsToAllocate(sectors.get(defendingSectorId).getReinforcementsProvided());
             DialogFactory.attackSuccessDialogBox(sectors.get(defendingSectorId).getReinforcementsProvided(), sectors.get(attackingSectorId).getUnitsInSector(), unitsToMove, defender.getPlayerName(), attacker.getPlayerName(), sectors.get(defendingSectorId).getDisplayName(), stage);
-            sectors.get(defendingSectorId).setOwner(attacker);
+
+
 
         } else if (sectors.get(defendingSectorId).getUnitsInSector() == 0 && sectors.get(attackingSectorId).getUnitsInSector() == 1) { // territory conquered but only one attacker remaining so can't move troops onto it
             DialogFactory.sectorOwnerChangeDialog(defender.getPlayerName(), unAssigned.getPlayerName(), sectors.get(defendingSectorId).getDisplayName(), stage);
