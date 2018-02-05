@@ -102,11 +102,18 @@ public class PhaseAttack extends Phase{
     @Override
     public void phaseAct() {
         if (attackingSector != null && defendingSector != null && numOfAttackers[0] != -1) {
+
             if (numOfAttackers[0] == 0) {
                 // cancel attack
-            } else {
-                executeAttack();
             }
+
+            else if(defendingSector.getUnitsInSector() == 0 ){
+
+                DialogFactory.InvalidAttack(this);
+            }
+            else {
+                    executeAttack();
+                }
             // reset attack
             attackingSector = null;
             defendingSector = null;

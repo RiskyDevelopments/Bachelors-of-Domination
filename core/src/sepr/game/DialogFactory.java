@@ -154,6 +154,8 @@ public class DialogFactory {
      */
     public static void allocateUnitsDialog(Integer maxAllocation, final int[] allocation, String sectorName, Stage stage) {
         final Slider slider = new Slider(1, maxAllocation, 1, false, DialogFactory.skin);
+        slider.getStyle().knob.setMinHeight(30);
+        slider.getStyle().knob.setBottomHeight(30);
         final Label sliderValue = new Label("1", DialogFactory.skin);
         slider.addListener(new ChangeListener() {
             @Override
@@ -284,6 +286,16 @@ public class DialogFactory {
 
         dialog.show(stage);
     }
+
+    /**
+     * creates a dialog box displaying informing the player that the PVC has spawned
+     *
+     * @param stage to draw the box onto
+     */
+    public static void InvalidAttack(Stage stage) {
+        basicDialogBox("Invalid Attack","You cannot attack an empty tile, move troops to it in the movement phase",stage);
+    }
+
 
 
     /**

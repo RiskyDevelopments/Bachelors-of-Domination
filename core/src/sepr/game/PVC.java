@@ -11,7 +11,7 @@ public class PVC {
 
     private float spawnChance; //likelihood that the PVC will spawn , between 0 and 1
                                 // 0 = 0% ; 1 = 100%
-    private int PVCBonus; //the bonus the pvc gives
+    private float PVCBonus; //the bonus the pvc gives
     private boolean PVCSpawned = false;
 
     /**
@@ -53,11 +53,11 @@ public class PVC {
         this.spawnChance = spawnChance;
     }
 
-    public int getPVCBonus() {
+    public float getPVCBonus() {
         return PVCBonus;
     }
 
-    public void setPVCBonus(int PVCBonus) {
+    public void setPVCBonus(float PVCBonus) {
         this.PVCBonus = PVCBonus;
     }
 

@@ -27,7 +27,7 @@ import static com.badlogic.gdx.graphics.g3d.particles.ParticleChannels.Color;
 public class Map{
     private HashMap<Integer, Sector> sectors; // mapping of sector ID to the sector object
     private List<UnitChangeParticle> particles; // list of active particle effects displaying the changes to the amount of units on a sector
-    private PVC proViceChancellor = new PVC(1,3);
+    private PVC proViceChancellor = new PVC((float)0.5,3);
 
     private BitmapFont font; // font for rendering sector unit data
     private GlyphLayout layout = new GlyphLayout();
