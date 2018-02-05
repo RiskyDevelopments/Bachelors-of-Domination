@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import sepr.game.utils.TurnPhaseType;
 
 import java.util.Random;
 
@@ -88,7 +89,9 @@ public class PhaseAttack extends Phase{
         int defendersLost = (int)(defenders * propDefendersLost);
 
         // apply the attack to the map
-        if (gameScreen.getMap().attackSector(attackingSector.getId(), defendingSector.getId(), attackersLost, defendersLost, gameScreen.getPlayerById(attackingSector.getOwnerId()), gameScreen.getPlayerById(defendingSector.getOwnerId()), gameScreen.getPlayerById(gameScreen.NEUTRAL_PLAYER_ID), this)) {
+        if (gameScreen.getMap().attackSector(attackingSector.getId(), defendingSector.getId(), attackersLost, defendersLost, gameScreen.getPlayerById(attackingSector.getOwnerId()), gameScreen.getPlayerById(defendingSector.getOwnerId()), gameScreen.getPlayerById(gameScreen.UNASSIGNED_ID), this)) {
+
+
             updateTroopReinforcementLabel();
         }
     }
@@ -99,11 +102,18 @@ public class PhaseAttack extends Phase{
     @Override
     public void phaseAct() {
         if (attackingSector != null && defendingSector != null && numOfAttackers[0] != -1) {
+
             if (numOfAttackers[0] == 0) {
                 // cancel attack
-            } else {
-                executeAttack();
             }
+
+            else if(defendingSector.getUnitsInSector() == 0 ){
+
+                DialogFactory.InvalidAttack(this);
+            }
+            else {
+                    executeAttack();
+                }
             // reset attack
             attackingSector = null;
             defendingSector = null;

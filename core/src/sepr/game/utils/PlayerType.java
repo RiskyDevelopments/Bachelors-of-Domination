@@ -1,4 +1,4 @@
-package sepr.game;
+package sepr.game.utils;
 
 /**
  * Possible types of player
@@ -6,7 +6,8 @@ package sepr.game;
 public enum PlayerType {
     NONE("NONE"),
     HUMAN("HUMAN PLAYER"),
-    NEUTRAL_AI("NEUTAL A.I.");
+    NEUTRAL_AI("NEUTAL A.I."),
+    UN_ASSGINED("UN_ASSGINED");
 
     private final String shortCode;
 
@@ -29,5 +30,10 @@ public enum PlayerType {
             if (playerType.getPlayerType().equals(text)) return playerType;
         }
         throw new IllegalArgumentException("Text parameter must match one of the enums");
+    }
+
+    @Override
+    public String toString() {
+        return this.shortCode;
     }
 }

@@ -154,6 +154,8 @@ public class DialogFactory {
      */
     public static void allocateUnitsDialog(Integer maxAllocation, final int[] allocation, String sectorName, Stage stage) {
         final Slider slider = new Slider(1, maxAllocation, 1, false, DialogFactory.skin);
+        slider.getStyle().knob.setMinHeight(30);
+        slider.getStyle().knob.setBottomHeight(30);
         final Label sliderValue = new Label("1", DialogFactory.skin);
         slider.addListener(new ChangeListener() {
             @Override
@@ -235,6 +237,67 @@ public class DialogFactory {
         dialog.show(stage);
     }
 
+
+
+    /**
+     * creates a dialog box for the player to select how many troops they want to attack with
+     * if player cancels the attackers[0] = 0 to signify the attack has been cancelled
+     *
+     * @param maxAttackers max number of attackers the player chooses to attack with
+     * @param defenders how many units are defending
+     * @param attackers 1 index array for setting number of troops the player has chosen to attack with: [0] number of troops player has set to attack with
+     * @param stage to display the dialog on
+     * @return the number of troops chosen to attack with or 0 if the attack is canceled
+     */
+    public static void moveDialog(int maxAttackers, int defenders, final int[] attackers, Stage stage) {
+        final Slider slider = new Slider(1, maxAttackers, 1, false, DialogFactory.skin);
+        slider.setValue(maxAttackers);
+        final Label sliderValue = new Label(maxAttackers + "", DialogFactory.skin); // label showing the value of the slider
+        slider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                sliderValue.setText(new StringBuilder((int)slider.getValue() + "")); // update slider value label when the slider is moved
+            }
+        });
+
+        Dialog dialog = new Dialog("Select number of troops to move", DialogFactory.skin) {
+            protected void result(Object object) {
+                if (object.equals("0")) { // cancel pressed
+                    attackers[0] = 0; // set number of attacker to 0, i.e. no attack
+                } else if (object.equals("1")){ // ok button pressed
+                    attackers[0] = (int)slider.getValue(); // set number of attackers to the value of the slider
+                }
+            }
+        };
+
+        // add labels saying the max number of attackers and how many defenders there are
+        dialog.text(new Label("Max number to move: " + maxAttackers, DialogFactory.skin)).padLeft(20).padRight(20).align(Align.left);
+        dialog.getContentTable().row();
+
+        // add slider and label showing number of units selected
+        dialog.getContentTable().add(slider).padLeft(20).padRight(20).align(Align.left).expandX();
+        dialog.getContentTable().add(sliderValue).padLeft(20).padRight(20).align(Align.right);
+
+        dialog.getContentTable().row();
+
+        // add buttons for accepting or canceling the selection
+        dialog.button("Cancel", "0").padLeft(20).padRight(40).align(Align.center);
+        dialog.button("Ok", "1").padLeft(40).padRight(20).align(Align.center);
+
+        dialog.show(stage);
+    }
+
+    /**
+     * creates a dialog box displaying informing the player that the PVC has spawned
+     *
+     * @param stage to draw the box onto
+     */
+    public static void InvalidAttack(Stage stage) {
+        basicDialogBox("Invalid Attack","You cannot attack an empty tile, move troops to it in the movement phase",stage);
+    }
+
+
+
     /**
      * dialog that displays a list of players that have been eliminated
      *
@@ -273,4 +336,29 @@ public class DialogFactory {
         dialog.button("Ok", "0");
         dialog.show(stage);
     }
+
+
+
+
+    /**
+     * creates a dialog box displaying informing the player they have taken over the PVC tile
+     *
+     * @param stage to draw the box onto
+     */
+    public static void TakenOverPVCDialogue(Stage stage) {
+        basicDialogBox("Pro Vice Chancellor tile captured","Well done you have found and captured the Pro Vice Chancellor tile. You now get extra 2 bonus troops per turn from this tile",stage);
+    }
+
+
+    /**
+     * creates a dialog box displaying informing the player that the PVC has spawned
+     *
+     * @param stage to draw the box onto
+     */
+    public static void PVCSpawnedMessage(Stage stage) {
+        basicDialogBox("Pro Vice Chancellor has spawned on a random Tile","Find the PVC to get a bonus and unlock the mini-game",stage);
+    }
+
+
+
 }

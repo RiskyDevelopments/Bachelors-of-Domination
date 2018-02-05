@@ -9,6 +9,9 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import org.lwjgl.Sys;
+import sepr.game.utils.PlayerType;
+import sepr.game.utils.TurnPhaseType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,6 +24,7 @@ import java.util.List;
  */
 public class GameScreen implements Screen, InputProcessor{
     public static final int NEUTRAL_PLAYER_ID = 4;
+    public static final int UNASSIGNED_ID = 5;
 
     private Main main; // main stored for switching between screens
 
@@ -44,10 +48,13 @@ public class GameScreen implements Screen, InputProcessor{
 
     private List<Integer> turnOrder; // array of player ids in order of players' turns;
     private int currentPlayerPointer; // index of current player in turnOrder list
+    private int previousPlayerPointer; // index of the previous player in turnOrder list
 
     private Texture mapBackground; // texture for drawing as a background behind the game
 
     private boolean gameSetup = false; // true once setupGame has been called
+
+    private int turnNumber;
 
     /**
      * sets up rendering objects and key input handling
@@ -71,6 +78,7 @@ public class GameScreen implements Screen, InputProcessor{
         this.keysDown.put(Input.Keys.LEFT, false);
         this.keysDown.put(Input.Keys.DOWN, false);
         this.keysDown.put(Input.Keys.RIGHT, false);
+        this.keysDown.put(Input.Keys.S, false);
     }
 
     /**
@@ -85,10 +93,11 @@ public class GameScreen implements Screen, InputProcessor{
         this.players = players;
         this.turnOrder = new ArrayList<Integer>();
         for (Integer i : players.keySet()) {
-            if (players.get(i).getPlayerType() != PlayerType.NEUTRAL_AI) { // don't add the neutral player to the turn order
+            if ((players.get(i).getPlayerType() != PlayerType.NEUTRAL_AI) && (players.get(i).getPlayerType() != PlayerType.UN_ASSGINED)) { // don't add the neutral player or unassigned to the turn order
                 this.turnOrder.add(i);
             }
         }
+
 
         this.currentPlayerPointer = 0; // set the current player to the player in the first position of the turnOrder list
 
@@ -116,6 +125,8 @@ public class GameScreen implements Screen, InputProcessor{
             throw new RuntimeException("Cannot start game before it is setup");
         }
         this.turnTimeStart = System.currentTimeMillis(); // set turn start time to current rime
+        turnNumber = 0; // sets the initial turn to 0
+        if(map.ShouldPVCSpawn()){map.spawnPVC(phases.get(currentPhase));}; //checks if the PVC could spawn on the first turn
         this.phases.get(currentPhase).enterPhase(getCurrentPlayer());
         resetCameraPosition();
     }
@@ -160,6 +171,15 @@ public class GameScreen implements Screen, InputProcessor{
         return players.get(id);
     }
 
+
+    /**
+     *
+     * @return gets the player object for the player who's turn it currently is
+     */
+    private Player getPreviousPlayer() {
+        return players.get(turnOrder.get(previousPlayerPointer));
+    }
+
     /**
      *
      * @return gets the player object for the player who's turn it currently is
@@ -191,6 +211,8 @@ public class GameScreen implements Screen, InputProcessor{
     protected void nextPhase() {
         this.phases.get(currentPhase).endPhase();
 
+
+
         switch (currentPhase) {
             case REINFORCEMENT:
                 currentPhase = TurnPhaseType.ATTACK;
@@ -200,7 +222,11 @@ public class GameScreen implements Screen, InputProcessor{
                 break;
             case MOVEMENT:
                 currentPhase = TurnPhaseType.REINFORCEMENT;
+
+                if(map.ShouldPVCSpawn()) {map.spawnPVC(phases.get(currentPhase));}
+
                 nextPlayer(); // nextPhase called during final phase of a player's turn so goto next player
+
                 break;
         }
 
@@ -214,9 +240,11 @@ public class GameScreen implements Screen, InputProcessor{
      * increments the currentPlayerPointer and resets it to 0 if it now exceeds the number of players in the list
      */
     private void nextPlayer() {
+        previousPlayerPointer = currentPlayerPointer;
         currentPlayerPointer++;
-        if (currentPlayerPointer == turnOrder.size()) { // reached end of players, reset to 0
+        if (currentPlayerPointer == turnOrder.size()) { // reached end of players, reset to 0 and increase turn number
             currentPlayerPointer = 0;
+
         }
 
         resetCameraPosition(); // re-centres the camera for the next player
@@ -450,6 +478,9 @@ public class GameScreen implements Screen, InputProcessor{
         if (keycode == Input.Keys.ESCAPE) {
             DialogFactory.leaveGameDialogBox(this, phases.get(currentPhase)); // confirm if the player wants to leave if escape is pressed
         }
+        if (keycode == Input.Keys.S) {
+            this.main.SaveGame();
+        }
         return true;
     }
 
@@ -492,5 +523,37 @@ public class GameScreen implements Screen, InputProcessor{
             gameplayCamera.zoom += amount * 0.03f;
         }
         return true;
+    }
+
+    public int getTurnNumber() { return turnNumber; }
+
+    public void setTurnNumber(int turnNumber) { this.turnNumber = turnNumber; }
+
+    public TurnPhaseType getCurrentPhase(){
+        return this.currentPhase;
+    }
+
+    public HashMap<Integer, Player> getPlayers() {
+        return players;
+    }
+
+    public boolean isTurnTimerEnabled(){
+        return this.turnTimerEnabled;
+    }
+
+    public int getMaxTurnTime(){
+        return this.maxTurnTime;
+    }
+
+    public long getTurnTimeStart(){
+        return this.turnTimeStart;
+    }
+
+    public List<Integer> getTurnOrder(){
+        return this.turnOrder;
+    }
+
+    public int getCurrentPlayerPointer(){
+        return this.currentPlayerPointer;
     }
 }

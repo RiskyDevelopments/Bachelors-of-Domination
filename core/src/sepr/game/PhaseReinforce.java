@@ -2,6 +2,7 @@ package sepr.game;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import sepr.game.utils.TurnPhaseType;
 
 /**
  * handles input, updating and rendering for the reinforcement phase
@@ -16,7 +17,14 @@ public class PhaseReinforce extends Phase {
     @Override
     void enterPhase(Player player) {
         super.enterPhase(player);
+
         currentPlayer.addTroopsToAllocate(5); // players get a basic reinforcement of 5 troops every turn
+        if (player.getOwnsPVC())  // assigns a bonus of two troops if they own the PVC tile
+        {
+            currentPlayer.addTroopsToAllocate(2);
+
+        }
+
         updateTroopReinforcementLabel();
         DialogFactory.nextTurnDialogBox(currentPlayer.getPlayerName(), currentPlayer.getTroopsToAllocate(), this);
     }

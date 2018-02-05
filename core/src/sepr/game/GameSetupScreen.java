@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import javafx.util.Pair;
+import sepr.game.utils.PlayerType;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -383,6 +384,7 @@ public class GameSetupScreen implements Screen{
 
         // setup neutral player
         players.put(GameScreen.NEUTRAL_PLAYER_ID, Player.createNeutralPlayer(GameScreen.NEUTRAL_PLAYER_ID));
+        players.put(GameScreen.UNASSIGNED_ID, Player.createUnassginedPlayer(GameScreen.UNASSIGNED_ID) );
         return players;
     }
 

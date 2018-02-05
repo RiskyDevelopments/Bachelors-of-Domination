@@ -1,6 +1,7 @@
 package sepr.game;
 
 import com.badlogic.gdx.graphics.Color;
+import sepr.game.utils.PlayerType;
 
 /**
  * base class for storing Neutral and Human player data
@@ -12,6 +13,7 @@ public class Player {
     private int troopsToAllocate; // how many troops the player has to allocate at the start of their next reinforcement phase
     private Color sectorColour; // what colour to shade sectors owned by the player
     private PlayerType playerType; // Human or Neutral player
+    private Boolean OwnsPVC;
 
     /**
      * creates a player object with the specified properties
@@ -29,6 +31,7 @@ public class Player {
         this.sectorColour = sectorColour;
         this.playerType = playerType;
         this.playerName = playerName;
+        this.OwnsPVC = false;
     }
 
     /**
@@ -45,8 +48,30 @@ public class Player {
      * @param id player's unique identifier
      */
     public static Player createNeutralPlayer(int id) {
-        return new Player(id, GameSetupScreen.CollegeName.UNI_OF_YORK, Color.WHITE, PlayerType.NEUTRAL_AI, "THE NEUTRAL PLAYER");
+        return new Player(id, GameSetupScreen.CollegeName.UNI_OF_YORK, Color.GRAY, PlayerType.NEUTRAL_AI, "THE NEUTRAL PLAYER");
     }
+
+    /**
+     * @param id player's unique identifier
+     */
+    public static Player createUnassginedPlayer(int id) {
+        return new Player(id, GameSetupScreen.CollegeName.UNI_OF_YORK, Color.WHITE, PlayerType.UN_ASSGINED, "UN ASSINGED TILE");
+    }
+
+
+    /**
+     * @return  if the player owns the PVC tile
+     */
+
+    public Boolean getOwnsPVC() { return OwnsPVC; }
+
+    /**
+     * @param  ownsPVC boolean if the player owns the PVC
+     */
+
+    public void setOwnsPVC(Boolean ownsPVC) { OwnsPVC = ownsPVC; }
+
+
 
     /**
      *
